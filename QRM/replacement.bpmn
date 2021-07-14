@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1cyum4d" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="Process_0fvw1jh" isExecutable="true">
+    <bpmn:subProcess id="SubProcess_1fmbx5k">
+      <bpmn:startEvent id="StartEvent_1nw39f8">
+        <bpmn:outgoing>SequenceFlow_1giaqkj</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sendTask id="Task_0b33wmt" name="Request Correction Matrix">
+        <bpmn:incoming>SequenceFlow_1giaqkj</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0sp5gsn</bpmn:outgoing>
+      </bpmn:sendTask>
+      <bpmn:receiveTask id="Task_10dkruq" name="Receive Correction Matrix">
+        <bpmn:incoming>SequenceFlow_0sp5gsn</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0oi2ham</bpmn:outgoing>
+      </bpmn:receiveTask>
+      <bpmn:sequenceFlow id="SequenceFlow_0sp5gsn" sourceRef="Task_0b33wmt" targetRef="Task_10dkruq" />
+      <bpmn:sequenceFlow id="SequenceFlow_1giaqkj" sourceRef="StartEvent_1nw39f8" targetRef="Task_0b33wmt" />
+      <bpmn:sequenceFlow id="SequenceFlow_0oi2ham" sourceRef="Task_10dkruq" targetRef="Task_1wqc826" />
+      <bpmn:serviceTask id="Task_1wqc826" name="Apply Correction Matrix">
+        <bpmn:incoming>SequenceFlow_0oi2ham</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0apvy74</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:endEvent id="EndEvent_1ig43fw">
+        <bpmn:incoming>SequenceFlow_0apvy74</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_0apvy74" sourceRef="Task_1wqc826" targetRef="EndEvent_1ig43fw" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0fvw1jh">
+      <bpmndi:BPMNShape id="SubProcess_1fmbx5k_di" bpmnElement="SubProcess_1fmbx5k" isExpanded="true">
+        <dc:Bounds x="200" y="50" width="570" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0sp5gsn_di" bpmnElement="SequenceFlow_0sp5gsn">
+        <di:waypoint x="400" y="150" />
+        <di:waypoint x="420" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1giaqkj_di" bpmnElement="SequenceFlow_1giaqkj">
+        <di:waypoint x="276" y="150" />
+        <di:waypoint x="300" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0oi2ham_di" bpmnElement="SequenceFlow_0oi2ham">
+        <di:waypoint x="520" y="150" />
+        <di:waypoint x="560" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0apvy74_di" bpmnElement="SequenceFlow_0apvy74">
+        <di:waypoint x="660" y="150" />
+        <di:waypoint x="702" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_1nw39f8_di" bpmnElement="StartEvent_1nw39f8">
+        <dc:Bounds x="240" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendTask_1re6e9h_di" bpmnElement="Task_0b33wmt">
+        <dc:Bounds x="300" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_0x8wyu5_di" bpmnElement="Task_10dkruq">
+        <dc:Bounds x="420" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1jrag74_di" bpmnElement="Task_1wqc826">
+        <dc:Bounds x="560" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1ig43fw_di" bpmnElement="EndEvent_1ig43fw">
+        <dc:Bounds x="702" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
