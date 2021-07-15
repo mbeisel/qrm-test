@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 #pictures & logs
-*.png
 *.txt
 
 #intellij
