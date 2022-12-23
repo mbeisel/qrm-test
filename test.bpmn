@@ -19,10 +19,10 @@
       <bpmn:incoming>SequenceFlow_1dwl6u2</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1bdqq0p</bpmn:outgoing>
     </bpmn:manualTask>
-    <quantme:readoutErrorMitigationTask id="Task_0vvknlb" provider="ibm" qpu="test" shots="1000" calibrationMethod="fullMatrix" mitigationMethod="matrixInversion">
+    <quantme:resultEvaluationTask id="Task_0vvknlb" objectiveFunction="expectationValue">
       <bpmn:incoming>SequenceFlow_1p4aqg1</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1dwl6u2</bpmn:outgoing>
-    </quantme:readoutErrorMitigationTask>
+    </quantme:resultEvaluationTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0bvc1ab">
@@ -54,7 +54,7 @@
       <bpmndi:BPMNShape id="ManualTask_1gncq7e_di" bpmnElement="Task_1cc8zpg">
         <dc:Bounds x="590" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReadoutErrorMitigationTask_0v52k4n_di" bpmnElement="Task_0vvknlb">
+      <bpmndi:BPMNShape id="ResultEvaluationTask_0st7m3f_di" bpmnElement="Task_0vvknlb">
         <dc:Bounds x="430" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
