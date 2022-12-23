@@ -12,7 +12,7 @@
                 <camunda:entry key="Content-Type">application/json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://localhost:5077/initialStateMaxCut</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://192.168.178.107:5077/initialStateMaxCut</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">print("Start Warmstarting");
                 var matrix = execution.getVariable("adjMatrix");
@@ -29,11 +29,17 @@
                   new_matrix.push(new_arr)
                 }
                
-                var objFun = execution.getVariable("wsClassicalAlgorithm");
-                var objFun = execution.getVariable("wsRepetitions");
-                var objFun = execution.getVariable("wsRounded");
-                                
-                var myJson = {"adj_matrix": new_matrix,"classicalAlgorithm": wsClassicalAlgorithm, "repetitions": wsRepetitions, "rounded": "wsRounded"};
+                var myJson = {"graph": new_matrix};
+                
+                if (classicalAlgorithm !== null){
+                	myJson["classicalAlgorithm"]= classicalAlgorithm
+                }
+                if (repetitions !== null){
+                	myJson["repetitions"]= repetitions
+                }
+                if (rounded !== null){
+                	myJson["rounded"]= rounded
+                }
                 myJson = JSON.stringify(myJson);
                 print(myJson);
 myJson =myJson;</camunda:script>
@@ -50,7 +56,7 @@ myJson =myJson;</camunda:script>
                 resp = JSON.parse(resp)
                 var value = resp.value;
                 print(value)
-								costs;</camunda:script>
+				value;</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
