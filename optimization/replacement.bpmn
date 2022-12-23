@@ -59,7 +59,7 @@
                   for each (var el in betas) array.push(parseFloat(el));
                   betas = array_b
 
-                  initialParameters = gammas.concat(betas)
+                  initialParameters = betas.concat(concat)
 
                   var myJson = {"topic": "123",
   "optimizer": optimizer,"initialParameters": initialParameters};

@@ -22,12 +22,12 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>SequenceFlow_18l109j</bpmn:outgoing>
     </bpmn:startEvent>
-    <quantme:quantumCircuitLoadingTask id="QuantumCircuitLoadingTask_11q764y" name="Circuit Generation" url="quokka/tspqaoa">
-      <bpmn:incoming>SequenceFlow_1b9zlvs</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1577u2a</bpmn:outgoing>
+    <quantme:quantumCircuitLoadingTask id="QuantumCircuitLoadingTask_11q764y" name="Circuit Generation" url="quokka/maxc">
+      <bpmn:incoming>SequenceFlow_0rgcsnc</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_16hi559</bpmn:outgoing>
     </quantme:quantumCircuitLoadingTask>
     <quantme:quantumCircuitExecutionTask id="QuantumCircuitExecutionTask_0b2vwaa" name="Circuit Execution" provider="ibm" qpu="aer_qasm_simulator" shots="2000" programmingLanguage="openqasm">
-      <bpmn:incoming>SequenceFlow_1577u2a</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1bglbdt</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1mhz2g5</bpmn:outgoing>
     </quantme:quantumCircuitExecutionTask>
     <bpmn:exclusiveGateway id="ExclusiveGateway_04rlqf0" name="converged?" camunda:asyncBefore="true">
@@ -44,8 +44,8 @@
     </bpmn:endEvent>
     <bpmn:exclusiveGateway id="ExclusiveGateway_0na7rch">
       <bpmn:incoming>SequenceFlow_1fezmoc</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_0rgcsnc</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1b9zlvs</bpmn:outgoing>
+      <bpmn:incoming>SequenceFlow_16hi559</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1bglbdt</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:exclusiveGateway id="ExclusiveGateway_0vrkhar" name="simulator?" camunda:asyncBefore="true">
       <bpmn:incoming>SequenceFlow_1mhz2g5</bpmn:incoming>
@@ -82,8 +82,6 @@
       <bpmn:outgoing>SequenceFlow_1fezmoc</bpmn:outgoing>
     </quantme:parameterOptimizationTask>
     <bpmn:sequenceFlow id="SequenceFlow_18l109j" sourceRef="StartEvent_0sn9t8s" targetRef="Task_19ho7bi" />
-    <bpmn:sequenceFlow id="SequenceFlow_1b9zlvs" sourceRef="ExclusiveGateway_0na7rch" targetRef="QuantumCircuitLoadingTask_11q764y" />
-    <bpmn:sequenceFlow id="SequenceFlow_1577u2a" sourceRef="QuantumCircuitLoadingTask_11q764y" targetRef="QuantumCircuitExecutionTask_0b2vwaa" />
     <bpmn:sequenceFlow id="SequenceFlow_1mhz2g5" sourceRef="QuantumCircuitExecutionTask_0b2vwaa" targetRef="ExclusiveGateway_0vrkhar" />
     <bpmn:sequenceFlow id="SequenceFlow_0c9f9wz" sourceRef="ResultEvaluationTask_0xaxygk" targetRef="ExclusiveGateway_04rlqf0" />
     <bpmn:sequenceFlow id="SequenceFlow_0kxelwm" name="No" sourceRef="ExclusiveGateway_04rlqf0" targetRef="ParameterOptimizationTask_0rqmw6e">
@@ -102,11 +100,13 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${qpu== 'simulator'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_08lsl69" sourceRef="ExclusiveGateway_1nvac8d" targetRef="ResultEvaluationTask_0xaxygk" />
-    <bpmn:sequenceFlow id="SequenceFlow_0rgcsnc" sourceRef="Task_19ho7bi" targetRef="ExclusiveGateway_0na7rch" />
+    <bpmn:sequenceFlow id="SequenceFlow_0rgcsnc" sourceRef="Task_19ho7bi" targetRef="QuantumCircuitLoadingTask_11q764y" />
     <quantme:warmStartingTask id="Task_19ho7bi" warmStartingMethod="initialStateWarmStartEgger" quantumAlgorithm="qaoa">
       <bpmn:incoming>SequenceFlow_18l109j</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0rgcsnc</bpmn:outgoing>
     </quantme:warmStartingTask>
+    <bpmn:sequenceFlow id="SequenceFlow_16hi559" sourceRef="QuantumCircuitLoadingTask_11q764y" targetRef="ExclusiveGateway_0na7rch" />
+    <bpmn:sequenceFlow id="SequenceFlow_1bglbdt" sourceRef="ExclusiveGateway_0na7rch" targetRef="QuantumCircuitExecutionTask_0b2vwaa" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1yn5x9z">
@@ -123,8 +123,8 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1fezmoc_di" bpmnElement="SequenceFlow_1fezmoc">
         <di:waypoint x="810" y="380" />
-        <di:waypoint x="390" y="380" />
-        <di:waypoint x="390" y="265" />
+        <di:waypoint x="530" y="380" />
+        <di:waypoint x="530" y="265" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1h4am3s_di" bpmnElement="SequenceFlow_1h4am3s">
         <di:waypoint x="1410" y="240" />
@@ -166,25 +166,22 @@
         <di:waypoint x="700" y="240" />
         <di:waypoint x="730" y="240" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1577u2a_di" bpmnElement="SequenceFlow_1577u2a">
-        <di:waypoint x="550" y="240" />
-        <di:waypoint x="600" y="240" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1b9zlvs_di" bpmnElement="SequenceFlow_1b9zlvs">
-        <di:waypoint x="415" y="240" />
-        <di:waypoint x="450" y="240" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_18l109j_di" bpmnElement="SequenceFlow_18l109j">
-        <di:waypoint x="188" y="240" />
+        <di:waypoint x="168" y="240" />
         <di:waypoint x="230" y="240" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0rgcsnc_di" bpmnElement="SequenceFlow_0rgcsnc">
         <di:waypoint x="330" y="240" />
-        <di:waypoint x="365" y="240" />
+        <di:waypoint x="370" y="240" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="QuantumCircuitLoadingTask_11q764y_di" bpmnElement="QuantumCircuitLoadingTask_11q764y">
-        <dc:Bounds x="450" y="200" width="100" height="80" />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_16hi559_di" bpmnElement="SequenceFlow_16hi559">
+        <di:waypoint x="470" y="240" />
+        <di:waypoint x="505" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1bglbdt_di" bpmnElement="SequenceFlow_1bglbdt">
+        <di:waypoint x="555" y="240" />
+        <di:waypoint x="600" y="240" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="QuantumCircuitExecutionTask_0b2vwaa_di" bpmnElement="QuantumCircuitExecutionTask_0b2vwaa">
         <dc:Bounds x="600" y="200" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -199,9 +196,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_0t7a4sq_di" bpmnElement="EndEvent_0t7a4sq">
         <dc:Bounds x="1522" y="222" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ExclusiveGateway_0na7rch_di" bpmnElement="ExclusiveGateway_0na7rch" isMarkerVisible="true">
-        <dc:Bounds x="365" y="215" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_0vrkhar_di" bpmnElement="ExclusiveGateway_0vrkhar" isMarkerVisible="true">
         <dc:Bounds x="730" y="215" width="50" height="50" />
@@ -221,11 +215,17 @@
       <bpmndi:BPMNShape id="ParameterOptimizationTask_0rqmw6e_di" bpmnElement="ParameterOptimizationTask_0rqmw6e">
         <dc:Bounds x="810" y="340" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="StartEvent_0sn9t8s_di" bpmnElement="StartEvent_0sn9t8s">
-        <dc:Bounds x="152" y="222" width="36" height="36" />
+      <bpmndi:BPMNShape id="ExclusiveGateway_0na7rch_di" bpmnElement="ExclusiveGateway_0na7rch" isMarkerVisible="true">
+        <dc:Bounds x="505" y="215" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="QuantumCircuitLoadingTask_11q764y_di" bpmnElement="QuantumCircuitLoadingTask_11q764y">
+        <dc:Bounds x="370" y="200" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="WarmStartingTask_0q9rk0e_di" bpmnElement="Task_19ho7bi">
         <dc:Bounds x="230" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0sn9t8s_di" bpmnElement="StartEvent_0sn9t8s">
+        <dc:Bounds x="132" y="222" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
