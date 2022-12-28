@@ -34,11 +34,13 @@
                 if (execution.getVariable("classicalAlgorithm") !== null){
                 	myJson["classicalAlgorithm"]= execution.getVariable("classicalAlgorithm")
                 }
-                if (execution.getVariable("repetitions") !== null){
-                	myJson["repetitions"]= repetitions
-                }
-                if (execution.getVariable("rounded") !== null){
+				if (execution.getVariable("repetitions") !== null){
+                	myJson["repetitions"]= execution.getVariable("repetitions")
+				}
+				if (execution.getVariable("rounded") !== null){
                 	myJson["rounded"]= execution.getVariable("rounded")
+				}
+
                 myJson = JSON.stringify(myJson);
                 print(myJson);
 myJson =myJson;</camunda:script>
