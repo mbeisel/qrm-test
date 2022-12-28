@@ -61,12 +61,13 @@
                 var myJson = {"provider": "ibm", "qpu": qpu,"circuit": circuit, "shots": shots, "credentials":{
                     "token": token, "hub": hub, "group": group, "project":project, "url":url
                     }
-					, "noise_model": noiseModel, "only_measurement_errors": onlyMeasurementErrors, format="qiskit", "parameters"=optimizedParameters
+					, "noise_model": noiseModel, "only_measurement_errors": onlyMeasurementErrors, "circuit_format":"qiskit", "parameters":optimizedParameters
                 };
                
                 
 
                 myJson = JSON.stringify(myJson);
+				print(myJson);
 myJson =myJson;</camunda:script>
             </camunda:inputParameter>
             <camunda:outputParameter name="counts">

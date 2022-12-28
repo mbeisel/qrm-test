@@ -85,13 +85,6 @@ var resp = connector.getVariable("response")
                 print(circuitNumQubits)
 								circuitNumQubits;</camunda:script>
             </camunda:outputParameter>
-			<camunda:outputParameter name="iterations">
-              <camunda:script scriptFormat="JavaScript">
-var iterations = connector.getVariable("iterations");
-iterations = iterations + 1
-iterations
-</camunda:script>
-            </camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>

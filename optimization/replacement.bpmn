@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_119s2xb" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20221222">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_119s2xb" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20221223">
   <bpmn:process id="Process_1enu2om" isExecutable="true">
     <bpmn:subProcess id="SubProcess_0y7j7vp">
       <bpmn:startEvent id="StartEvent_06jb5q3">
@@ -17,10 +17,10 @@
         <bpmn:outgoing>SequenceFlow_0jv1zhg</bpmn:outgoing>
       </bpmn:exclusiveGateway>
       <bpmn:sequenceFlow id="SequenceFlow_1ebfooz" name="No" sourceRef="ExclusiveGateway_0muea1g" targetRef="ExclusiveGateway_1ivwp1n">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${iterations&gt;= 1}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('iterations')!= null &amp;&amp; execution.getVariable('iterations') &gt;= 1}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="SequenceFlow_1lffclo" name="Yes" sourceRef="ExclusiveGateway_0muea1g" targetRef="Task_1pg7e2b">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${iterations&lt;1}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('iterations')== null || execution.getVariable('iterations') &lt; 1}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="SequenceFlow_100xkhy" sourceRef="Task_1pg7e2b" targetRef="ExclusiveGateway_1ivwp1n" />
       <bpmn:sequenceFlow id="SequenceFlow_0jv1zhg" sourceRef="ExclusiveGateway_1ivwp1n" targetRef="Task_0twvhh9" />
@@ -44,6 +44,7 @@
                 <camunda:script scriptFormat="JavaScript">var optimizer = execution.getVariable("optimizer");
                   var gammas = execution.getVariable("gammas");
                   var betas = execution.getVariable("betas");
+                  execution.setVariable("iterations", 0);
 
                   gammas = gammas.substring(1, gammas.length-1)
                   gammas = gammas.split(",")
@@ -59,7 +60,7 @@
                   for each (var el in betas) array.push(parseFloat(el));
                   betas = array_b
 
-                  initialParameters = betas.concat(concat)
+                  initialParameters = betas.concat(gammas)
 
                   var myJson = {"topic": "123",
   "optimizer": optimizer,"initialParameters": initialParameters};
@@ -73,8 +74,10 @@
                   print(resp)
   resp;</camunda:script>
               </camunda:outputParameter>
-              <camunda:outputParameter name="iterations">
-                <camunda:script scriptFormat="JavaScript">0</camunda:script>
+<camunda:outputParameter name="iterations">
+                <camunda:script scriptFormat="JavaScript">var iterations = connector.getVariable("iterations");
+iterations = iterations + 1
+iterations</camunda:script>
               </camunda:outputParameter>
               <camunda:outputParameter name="converged">
                 <camunda:script scriptFormat="JavaScript">"false"</camunda:script>
@@ -87,6 +90,16 @@
         <bpmn:outgoing>SequenceFlow_100xkhy</bpmn:outgoing>
       </bpmn:serviceTask>
       <bpmn:serviceTask id="Task_0twvhh9" name="Optimizer Parameters" camunda:type="external" camunda:topic="123">
+		  <bpmn:extensionElements>
+			  <camunda:inputOutput>
+				<camunda:outputParameter name="iterations">
+					<camunda:script scriptFormat="JavaScript">var iterations = execution.getVariable("iterations");
+							iterations = iterations + 1
+							iterations
+					</camunda:script>
+				</camunda:outputParameter>
+			  </camunda:inputOutput>
+			</bpmn:extensionElements>
         <bpmn:incoming>SequenceFlow_0jv1zhg</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_1hst7js</bpmn:outgoing>
       </bpmn:serviceTask>

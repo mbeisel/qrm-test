@@ -26,7 +26,7 @@
       <bpmn:incoming>SequenceFlow_0rgcsnc</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_16hi559</bpmn:outgoing>
     </quantme:quantumCircuitLoadingTask>
-    <quantme:quantumCircuitExecutionTask id="QuantumCircuitExecutionTask_0b2vwaa" name="Circuit Execution" provider="ibm" qpu="aer_qasm_simulator" shots="2000" programmingLanguage="openqasm">
+    <quantme:quantumCircuitExecutionTask id="QuantumCircuitExecutionTask_0b2vwaa" name="Circuit Execution" provider="ibm" qpu="aer_qasm_simulator" shots="2000" programmingLanguage="qiskit">
       <bpmn:incoming>SequenceFlow_1bglbdt</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1mhz2g5</bpmn:outgoing>
     </quantme:quantumCircuitExecutionTask>
@@ -85,10 +85,10 @@
     <bpmn:sequenceFlow id="SequenceFlow_1mhz2g5" sourceRef="QuantumCircuitExecutionTask_0b2vwaa" targetRef="ExclusiveGateway_0vrkhar" />
     <bpmn:sequenceFlow id="SequenceFlow_0c9f9wz" sourceRef="ResultEvaluationTask_0xaxygk" targetRef="ExclusiveGateway_04rlqf0" />
     <bpmn:sequenceFlow id="SequenceFlow_0kxelwm" name="No" sourceRef="ExclusiveGateway_04rlqf0" targetRef="ParameterOptimizationTask_0rqmw6e">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged ')== null || execution.getVariable('converged ') == 'false'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')== null || execution.getVariable('converged') == 'false'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0zrbcq9" name="Yes" sourceRef="ExclusiveGateway_04rlqf0" targetRef="UserTask_068x1ev">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged ')!= null &amp;&amp; execution.getVariable('converged ') == 'true'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')!= null &amp;&amp; execution.getVariable('converged') == 'true'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1au4gtm" name="No" sourceRef="ExclusiveGateway_0vrkhar" targetRef="ReadoutErrorMitigationTask_0h6r9yh">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${qpu!= 'simulator'}</bpmn:conditionExpression>

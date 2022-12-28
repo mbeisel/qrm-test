@@ -12,7 +12,7 @@
                 <camunda:entry key="Content-Type">application/json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-generation/algorithms/tspqaoa</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-generation/algorithms/maxcutqaoa</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">
                 var matrix = execution.getVariable("adjMatrix");
@@ -60,13 +60,6 @@ var resp = connector.getVariable("response")
                 var circuitNumQubits = resp.n_qubits;
                 print(circuitNumQubits)
 								circuitNumQubits;</camunda:script>
-            </camunda:outputParameter>
-			<camunda:outputParameter name="iterations">
-              <camunda:script scriptFormat="JavaScript">
-var iterations = connector.getVariable("iterations");
-iterations = iterations + 1
-iterations
-</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
