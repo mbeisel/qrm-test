@@ -73,7 +73,7 @@
       <bpmn:incoming>SequenceFlow_0zrbcq9</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1h4am3s</bpmn:outgoing>
     </bpmn:userTask>
-    <quantme:resultEvaluationTask id="ResultEvaluationTask_0xaxygk" name="Evaluate Result" objectiveFunction="expectationValue">
+    <quantme:resultEvaluationTask id="ResultEvaluationTask_0xaxygk" name="Evaluate Result" objectiveFunction="expectationValue" costFunction="maxcut">
       <bpmn:incoming>SequenceFlow_08lsl69</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0c9f9wz</bpmn:outgoing>
     </quantme:resultEvaluationTask>
@@ -101,7 +101,7 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_08lsl69" sourceRef="ExclusiveGateway_1nvac8d" targetRef="ResultEvaluationTask_0xaxygk" />
     <bpmn:sequenceFlow id="SequenceFlow_0rgcsnc" sourceRef="Task_19ho7bi" targetRef="QuantumCircuitLoadingTask_11q764y" />
-    <quantme:warmStartingTask id="Task_19ho7bi" warmStartingMethod="initialStateWarmStartEgger" quantumAlgorithm="qaoa">
+    <quantme:warmStartingTask id="Task_19ho7bi" name="Warm-Start&#10;Initialization" warmStartingMethod="initialStateWarmStartEgger" quantumAlgorithm="qaoa">
       <bpmn:incoming>SequenceFlow_18l109j</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0rgcsnc</bpmn:outgoing>
     </quantme:warmStartingTask>

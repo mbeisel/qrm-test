@@ -33,6 +33,9 @@
                   
   
                 var myJson = {"adj_matrix": new_matrix,"p": p, "parameterized": "true"};
+				if (execution.getVariable("wsBitstring") !== null){
+                	myJson["initial_state"]= execution.getVariable("wsBitstring")
+				}
 
 myJson = JSON.stringify(myJson);
 myJson =myJson</camunda:script>
