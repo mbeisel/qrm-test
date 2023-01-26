@@ -4,9 +4,114 @@
     <bpmn:sequenceFlow id="SequenceFlow_1h1q60o" sourceRef="Task_14ryfsm" targetRef="Task_1ffvrj7" />
     <bpmn:serviceTask id="Task_1ffvrj7" name="Combine Results">
       <bpmn:incoming>SequenceFlow_1h1q60o</bpmn:incoming>
+       <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Accept">application/json</camunda:entry>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-cutting/cutCircuits</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="JavaScript">
+                var counts = execution.getVariable("counts");
+                var cuttingMetaData = execution.getVariable("cuttingMetaData");
+                var circuit = execution.getVariable("circuit");
+               
+                
+                var myJson = {"circuit": circuit, "subcircuit_results": counts, "cuts": cuttingMetaData, "unnormalized_results":"True", "shot_scaling_factor":1000};
+               
+                
+
+                myJson = JSON.stringify(myJson);
+myJson =myJson;</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="counts">
+              <camunda:script scriptFormat="JavaScript">
+var resp = connector.getVariable("response")
+resp = JSON.parse(resp)
+var counts = S(JSON.stringify({"counts":resp.counts}));
+counts;
+
+</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="measQubits">
+              <camunda:script scriptFormat="JavaScript">
+var resp = connector.getVariable("response")
+                resp = JSON.parse(resp)
+                var meas_qubits = "["+resp.meas_qubits.toString()+"]";
+								meas_qubits;
+</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="circuitDepthTranspiled">
+              <camunda:script scriptFormat="JavaScript">
+var resp = connector.getVariable("response")
+                resp = JSON.parse(resp)
+                var circuitDepthTranspiled = resp.transpiled_circuit_depth;
+								circuitDepthTranspiled;
+</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Task_14ryfsm" name="Cut Circuits">
       <bpmn:outgoing>SequenceFlow_1h1q60o</bpmn:outgoing>
+             <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Accept">application/json</camunda:entry>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-cutting/cutCircuits</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="JavaScript">
+                var circuit = execution.getVariable("circuit");
+                var cuttingMethod = execution.getVariable("cuttingMethod");
+                var maxSubCircuitWidth = execution.getVariable("maxSubCircuitWidth");
+                var maxNumberOfCuts = execution.getVariable("maxNumberOfCuts");
+                var maxNumSubCircuits = execution.getVariable("maxNumSubCircuits");
+                              
+                
+                var myJson = {"circuit": circuit, "method": "automatic, "max_subcircuit_width": maxSubCircuitWidth, "max_cuts": maxNumberOfCuts, "max_num_subcircuits": maxNumSubCircuits, "circuit_format": "qiskit"
+                };
+               
+                
+
+                myJson = JSON.stringify(myJson);
+myJson =myJson;</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="cuttingMetaData">
+              <camunda:script scriptFormat="JavaScript">
+              var resp = connector.getVariable("response")
+              resp = JSON.parse(resp)
+              var cuttingMetaData = S(JSON.stringify(resp));
+              cuttingMetaData;
+
+              </camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="subCircuits">
+              <camunda:script scriptFormat="JavaScript">
+              var resp = connector.getVariable("response")
+              resp = JSON.parse(resp)
+              var subCircuits = S(JSON.stringify("subcircuits":{resp.individual_subcircuits}));
+              subCircuits;
+
+              </camunda:script>
+            </camunda:outputParameter>
+            
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
