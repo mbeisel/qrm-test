@@ -81,7 +81,7 @@ var resp = connector.getVariable("response")
                 var maxNumSubCircuits = execution.getVariable("maxNumSubCircuits");
                               
                 
-                var myJson = {"circuit": circuit, "method": "automatic, "max_subcircuit_width": maxSubCircuitWidth, "max_cuts": maxNumberOfCuts, "max_num_subcircuits": maxNumSubCircuits, "circuit_format": "qiskit"
+                var myJson = {"circuit": circuit, "method": "automatic", "max_subcircuit_width": maxSubCircuitWidth, "max_cuts": maxNumberOfCuts, "max_num_subcircuits": maxNumSubCircuits, "circuit_format": "qiskit"
                 };
                
                 
@@ -102,7 +102,7 @@ myJson =myJson;</camunda:script>
               <camunda:script scriptFormat="JavaScript">
               var resp = connector.getVariable("response")
               resp = JSON.parse(resp)
-              var subCircuits = S(JSON.stringify("subcircuits":{resp.individual_subcircuits}));
+              var subCircuits = S(JSON.stringify({"subcircuits":resp.individual_subcircuits}));
               subCircuits;
 
               </camunda:script>

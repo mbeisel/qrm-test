@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:quantme="https://github.com/UST-QuAntiL/QuantME-Quantum4BPMN" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0wzkc0b" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20230119">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:quantme="https://github.com/UST-QuAntiL/QuantME-Quantum4BPMN" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0wzkc0b" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20230126">
   <bpmn:process id="Process_070m5p1" isExecutable="true">
-    <quantme:circuitCuttingSubprocess id="Task_13doc75" cuttingMethod="qiskit" cuttingStrategy="automatic" maxSubCircuitWidth="10" maxNumberOfCuts="2" numSubCircuits="5">
+    <quantme:circuitCuttingSubprocess id="Task_13doc75" cuttingMethod="qiskit" maxSubCircuitWidth="22" maxNumberOfCuts="2" maxNumSubCircuits="2">
       <bpmn:incoming>SequenceFlow_0cc39h7</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1ir2z8n</bpmn:outgoing>
       <bpmn:endEvent id="EndEvent_1duzs3w">
@@ -26,8 +26,12 @@
         <bpmn:outgoing>SequenceFlow_14lmcjd</bpmn:outgoing>
         <bpmn:outgoing>SequenceFlow_123mbe9</bpmn:outgoing>
       </bpmn:exclusiveGateway>
-      <bpmn:sequenceFlow id="SequenceFlow_14lmcjd" sourceRef="ExclusiveGateway_1xnhepr" targetRef="EndEvent_1duzs3w" />
-      <bpmn:sequenceFlow id="SequenceFlow_123mbe9" sourceRef="ExclusiveGateway_1xnhepr" targetRef="Task_00xcokl" />
+      <bpmn:sequenceFlow id="SequenceFlow_14lmcjd" sourceRef="ExclusiveGateway_1xnhepr" targetRef="EndEvent_1duzs3w">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')!= null &amp;&amp; execution.getVariable('converged') == 'true'}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_123mbe9" sourceRef="ExclusiveGateway_1xnhepr" targetRef="Task_00xcokl">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')== null || execution.getVariable('converged') == 'false'}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="SequenceFlow_03d0zlb" sourceRef="Task_000xzf9" targetRef="ExclusiveGateway_1xnhepr" />
       <quantme:resultEvaluationTask id="Task_000xzf9" objectiveFunction="expectationValue" costFunction="maxcut">
         <bpmn:incoming>SequenceFlow_1f7civo</bpmn:incoming>
@@ -53,11 +57,11 @@
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_114600l" sourceRef="StartEvent_0ej6lwb" targetRef="Task_009hsrk" />
     <bpmn:sequenceFlow id="SequenceFlow_0cc39h7" sourceRef="Task_009hsrk" targetRef="Task_13doc75" />
-    <bpmn:scriptTask id="Task_009hsrk">
+    <bpmn:sequenceFlow id="SequenceFlow_1ir2z8n" sourceRef="Task_13doc75" targetRef="EndEvent_0pjq7fr" />
+    <quantme:quantumCircuitLoadingTask id="Task_009hsrk" url="quokka/maxcut">
       <bpmn:incoming>SequenceFlow_114600l</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0cc39h7</bpmn:outgoing>
-    </bpmn:scriptTask>
-    <bpmn:sequenceFlow id="SequenceFlow_1ir2z8n" sourceRef="Task_13doc75" targetRef="EndEvent_0pjq7fr" />
+    </quantme:quantumCircuitLoadingTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_070m5p1">
@@ -73,6 +77,9 @@
         <di:waypoint x="188" y="225" />
         <di:waypoint x="260" y="225" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="QuantumCircuitLoadingTask_1pmyy9a_di" bpmnElement="Task_009hsrk">
+        <dc:Bounds x="260" y="185" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="CircuitCuttingSubprocess_1hyj6ir_di" bpmnElement="Task_13doc75" isExpanded="true">
         <dc:Bounds x="420" y="80" width="720" height="280" />
       </bpmndi:BPMNShape>
@@ -139,9 +146,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="StartEvent_0ej6lwb_di" bpmnElement="StartEvent_0ej6lwb">
         <dc:Bounds x="152" y="207" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ScriptTask_1luy718_di" bpmnElement="Task_009hsrk">
-        <dc:Bounds x="260" y="185" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
