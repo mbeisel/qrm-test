@@ -39,11 +39,22 @@
                 counts = JSON.parse(counts)
                 }
                 
-                var objFun = execution.getVariable("objFun");
+                var objFun = execution.getVariable("objectiveFunction");
+                  
+                  var objFun_hyperparameters = {}
+                  if (execution.getVariable("alpha") !== null){
+                  objFun_hyperparameters["alpha"]=execution.getVariable("alpha")
+                  }
+                    if (execution.getVariable("eta") !== null){
+                  objFun_hyperparameters["eta"]=execution.getVariable("eta")
+                  }
+                  
 
                 execution.setVariable("plotUrl", "http://localhost:8080/engine-rest/process-instance/" + execution.getProcessInstanceId() + "/variables/plot/data");
                 
-                var myJson = {"adj_matrix": new_matrix,"counts": counts,"objFun": objFun, "visualization": "True"};
+                var myJson = {"adj_matrix": new_matrix,"counts": counts,"objFun": objFun, "visualization": "True", "objFun_hyperparameters": objFun_hyperparameters};
+
+
                 myJson = JSON.stringify(myJson);
                 print(myJson);
 myJson =myJson;</camunda:script>

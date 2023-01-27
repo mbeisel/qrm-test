@@ -106,7 +106,7 @@ myJson =myJson;</camunda:script>
               <camunda:script scriptFormat="JavaScript">
               var resp = connector.getVariable("response")
               resp = JSON.parse(resp)
-              var subCircuits = S(JSON.stringify({"subcircuits":resp.individual_subcircuits}));
+              var subCircuits = S(JSON.stringify({"subCircuits":resp.individual_subcircuits}));
               subCircuits;
 
               </camunda:script>
