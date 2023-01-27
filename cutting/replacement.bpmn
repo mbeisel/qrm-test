@@ -78,6 +78,7 @@ counts;</camunda:script>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">
                 var circuit = execution.getVariable("circuit");
+				circuit = circuit.prop("circuit").value()
                 var cuttingMethod = execution.getVariable("cuttingMethod");
                 var maxSubCircuitWidth = execution.getVariable("maxSubCircuitWidth");
                 var maxNumberOfCuts = execution.getVariable("maxNumberOfCuts");
