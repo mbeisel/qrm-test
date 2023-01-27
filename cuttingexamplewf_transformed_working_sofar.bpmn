@@ -1,0 +1,755 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0wzkc0b" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20230126">
+  <bpmn:process id="Process_070m5p1" isExecutable="true">
+    <bpmn:endEvent id="EndEvent_0pjq7fr">
+      <bpmn:incoming>SequenceFlow_1ir2z8n</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="StartEvent_0ej6lwb">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="adjMatrix" label="Array containing adj_matrix" type="string" defaultValue="[[0,2,1],[3,0,1],[1,2,0]]" />
+          <camunda:formField id="token" label="IBMQ Token" type="string" />
+          <camunda:formField id="hub" label="IBMQ Hub" type="string" defaultValue="ibm-q" />
+          <camunda:formField id="group" label="IBMQ Group" type="string" defaultValue="open" />
+          <camunda:formField id="project" label="IBMQ Project" type="string" defaultValue="main" />
+          <camunda:formField id="ibmqUrl" label="IBMQ URL" type="string" defaultValue="https://auth.quantum-computing.ibm.com/api" />
+          <camunda:formField id="qpu" label="IBMQ Backend name" type="string" defaultValue="simulator" />
+          <camunda:formField id="noiseModel" label="Noise Model" type="string" />
+          <camunda:formField id="onlyMeasurementErrors" label="Noise Model contains only measurement errors" type="boolean" />
+          <camunda:formField id="optimizer" label="optimizer" type="string" defaultValue="cobyla" />
+          <camunda:formField id="objFun" label="Objective Function for evaluation" type="string" defaultValue="expectation" />
+          <camunda:formField id="gammas" label="gammas" type="string" defaultValue="[1]" />
+          <camunda:formField id="betas" label="betas" type="string" defaultValue="[1]" />
+          <camunda:formField id="p" label="p" type="string" defaultValue="1" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_114600l</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_114600l" sourceRef="StartEvent_0ej6lwb" targetRef="Task_009hsrk" />
+    <bpmn:sequenceFlow id="SequenceFlow_0cc39h7" sourceRef="Task_009hsrk" targetRef="Task_13doc75" />
+    <bpmn:sequenceFlow id="SequenceFlow_1ir2z8n" sourceRef="Task_13doc75" targetRef="EndEvent_0pjq7fr" />
+    <bpmn:subProcess id="Task_13doc75">
+      <bpmn:incoming>SequenceFlow_0cc39h7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ir2z8n</bpmn:outgoing>
+      <bpmn:endEvent id="EndEvent_1duzs3w">
+        <bpmn:incoming>SequenceFlow_14lmcjd</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:startEvent id="StartEvent_1">
+        <bpmn:outgoing>SequenceFlow_1a9gnob</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:exclusiveGateway id="ExclusiveGateway_1xnhepr">
+        <bpmn:incoming>SequenceFlow_03d0zlb</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_14lmcjd</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_123mbe9</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:exclusiveGateway id="ExclusiveGateway_0lo42en">
+        <bpmn:incoming>SequenceFlow_0wggqgf</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_033vtgl</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1g4nyfq</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="SequenceFlow_0wggqgf" sourceRef="Task_00xcokl" targetRef="ExclusiveGateway_0lo42en" />
+      <bpmn:sequenceFlow id="SequenceFlow_1g4nyfq" sourceRef="ExclusiveGateway_0lo42en" targetRef="Task_1i5jbsg" />
+      <bpmn:sequenceFlow id="SequenceFlow_03d0zlb" sourceRef="Task_000xzf9" targetRef="ExclusiveGateway_1xnhepr" />
+      <bpmn:sequenceFlow id="SequenceFlow_123mbe9" sourceRef="ExclusiveGateway_1xnhepr" targetRef="Task_00xcokl">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')== null || execution.getVariable('converged') == 'false'}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_14lmcjd" sourceRef="ExclusiveGateway_1xnhepr" targetRef="EndEvent_1duzs3w">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')!= null &amp;&amp; execution.getVariable('converged') == 'true'}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_0rvah9x" sourceRef="Task_1i5jbsg" targetRef="ServiceTask_0e6oruo" />
+      <bpmn:serviceTask id="ServiceTask_0xcr795" name="Cut Circuits">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Accept">application/json</camunda:entry>
+                  <camunda:entry key="Content-Type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-cutting/cutCircuits</camunda:inputParameter>
+              <camunda:inputParameter name="payload">
+                <camunda:script scriptFormat="JavaScript">var circuit = execution.getVariable("circuit");
+                  circuit = circuit.prop("circuit").value()
+                var cuttingMethod = execution.getVariable("cuttingMethod");
+                var maxSubCircuitWidth = execution.getVariable("maxSubCircuitWidth");
+                var maxNumberOfCuts = execution.getVariable("maxNumberOfCuts");
+                var maxNumSubCircuits = execution.getVariable("maxNumSubCircuits");
+                              
+                
+                var myJson = {"circuit": circuit, "method": "automatic", "max_subcircuit_width": maxSubCircuitWidth, "max_cuts": maxNumberOfCuts, "max_num_subcircuits": maxNumSubCircuits, "circuit_format": "qiskit"
+                };
+               
+                
+
+                myJson = JSON.stringify(myJson);
+                  print(myJson);
+myJson =myJson;</camunda:script>
+              </camunda:inputParameter>
+              <camunda:outputParameter name="cuttingMetaData">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+              resp = JSON.parse(resp)
+              var cuttingMetaData = S(JSON.stringify(resp));
+              cuttingMetaData;</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="subCircuits">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+              resp = JSON.parse(resp)
+                  print(resp);
+              var subCircuits = S(JSON.stringify({"subCircuits":resp.individual_subcircuits}));
+              subCircuits;</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="cuttingMethod">qiskit</camunda:inputParameter>
+            <camunda:inputParameter name="maxSubCircuitWidth">22</camunda:inputParameter>
+            <camunda:inputParameter name="maxNumberOfCuts">2</camunda:inputParameter>
+            <camunda:inputParameter name="maxNumSubCircuits">2</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_1a9gnob</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_033vtgl</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="SequenceFlow_1a9gnob" sourceRef="StartEvent_1" targetRef="ServiceTask_0xcr795" />
+      <bpmn:sequenceFlow id="SequenceFlow_033vtgl" sourceRef="ServiceTask_0xcr795" targetRef="ExclusiveGateway_0lo42en" />
+      <bpmn:serviceTask id="ServiceTask_0e6oruo" name="Combine Results">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Accept">application/json</camunda:entry>
+                  <camunda:entry key="Content-Type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-cutting/combineResultsQuokka</camunda:inputParameter>
+              <camunda:inputParameter name="payload">
+                <camunda:script scriptFormat="JavaScript">print("combine")
+                  var counts = execution.getVariable("counts");
+                  //counts = JSON.parse(counts)
+									//counts = counts["counts"]
+                  counts = counts.prop("counts").elements()
+                  print(execution.getVariable("counts"));
+                  print(counts)
+                  print(JSON.parse(counts[0]))
+                  print(JSON.stringify(JSON.parse(counts[0])))
+                   new_counts = []
+                for each (var val in counts) {
+                  print(val)
+                  print(JSON.stringify(JSON.parse(val)))
+                   new_counts.push(JSON.parse(val));
+                }
+                  print(new_counts)
+                  
+                var cuttingMetaData = JSON.parse(execution.getVariable("cuttingMetaData"));
+                  print(cuttingMetaData)
+                  
+                 var circuit = execution.getVariable("circuit");
+                  circuit = circuit.prop("circuit").value()
+
+                                                              
+                
+                var myJson = {"circuit": circuit, "subcircuit_results": new_counts, "cuts": cuttingMetaData, "unnormalized_results":"True", "shot_scaling_factor":1000, "circuit_format":"qiskit"};
+               
+                
+
+                myJson = JSON.stringify(myJson);
+                  print(myJson);
+myJson =myJson;</camunda:script>
+              </camunda:inputParameter>
+              <camunda:outputParameter name="counts">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+resp = JSON.parse(resp)
+                  var counts = S(JSON.stringify({"counts":resp.result}));
+              print(counts);   
+counts;</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="cuttingMethod">qiskit</camunda:inputParameter>
+            <camunda:inputParameter name="maxSubCircuitWidth">22</camunda:inputParameter>
+            <camunda:inputParameter name="maxNumberOfCuts">2</camunda:inputParameter>
+            <camunda:inputParameter name="maxNumSubCircuits">2</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_0rvah9x</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0iwls0z</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="SequenceFlow_0iwls0z" sourceRef="ServiceTask_0e6oruo" targetRef="Task_000xzf9" />
+      <bpmn:serviceTask id="Task_1i5jbsg" name="Execute Circuit">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Accept">application/json</camunda:entry>
+                  <camunda:entry key="Content-Type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-execution/execution-service</camunda:inputParameter>
+              <camunda:inputParameter name="payload">
+                <camunda:script scriptFormat="JavaScript">var qpu = execution.getVariable("qpu");
+                var noiseModel = execution.getVariable("noiseModel");
+				var onlyMeasurementErrors = execution.getVariable("onlyMeasurementErrors");
+				var token = execution.getVariable("token");
+				var hub = execution.getVariable("hub");
+				var group = execution.getVariable("group");
+				var project = execution.getVariable("project");
+				var url = execution.getVariable("ibmqUrl");
+				var circuit = execution.getVariable("circuit");
+                circuit = circuit.prop("circuit").value()
+				var shots = execution.getVariable("shots");
+                shots = parseInt(shots);
+				var p = execution.getVariable("p");
+ 				var optimizedParameters = execution.getVariable("optimizedParameters");
+                var betas = execution.getVariable("betas");
+                var gammas = execution.getVariable("gammas");
+                  print("tesT");
+                  var subCircuits = execution.getVariable("subCircuits");
+                  subCircuits = subCircuits.prop("subCircuits").elements();
+                  print(subCircuits);
+                  print(subCircuits[0]);
+                  if(subCircuits != null) {
+                  new_matrix = []
+                for each (var val in subCircuits) {
+                  print(val);
+                   new_matrix.push(val.value());
+                }
+                  print("afterloop")
+                  print(new_matrix);
+                  circuit = new_matrix
+                  print(subCircuits);
+                  }
+				
+				 if(optimizedParameters != null){
+					optimizedParameters = optimizedParameters.substring(1, optimizedParameters.length-1).replace(". ", "").replace(" ", "");
+					optimizedParameters = optimizedParameters.split(",")
+					print(optimizedParameters);
+					//p = optimizedParameters.length/2
+					//gammas = optimizedParameters.slice(0,p);
+					//betas = optimizedParameters.slice(p, optimizedParameters.length);
+                } else{
+					betas = betas.substring(1, betas.length-1)
+					betas = betas.split(",")
+					b_array = [];
+					for each (var el in betas) b_array.push(parseFloat(el));
+					betas = b_array 
+
+					gammas = gammas.substring(1, gammas.length-1)
+					gammas = gammas.split(",")
+					g_array = [];
+					for each (var el in gammas) g_array.push(parseFloat(el));
+					gammas = g_array 
+					p = parseInt(p);
+					optimizedParameters = betas.concat(gammas);
+				}
+				
+				
+                
+                
+                var myJson = {"provider": "ibm", "qpu": qpu,"circuit": circuit, "shots": shots, "credentials":{
+                    "token": token, "hub": hub, "group": group, "project":project, "url":url
+                    }
+					, "noise_model": noiseModel, "only_measurement_errors": onlyMeasurementErrors, "circuit_format":"qiskit", "parameters":optimizedParameters
+                };
+               
+                
+
+                myJson = JSON.stringify(myJson);
+				print(myJson);
+myJson =myJson;</camunda:script>
+              </camunda:inputParameter>
+              <camunda:outputParameter name="counts">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+resp = JSON.parse(resp)
+                  if(resp.counts === undefined ){
+                  	var counts_arr = []
+                  	for each (var val in resp) counts_arr.push(val.counts)     
+                  	print(counts_arr)
+                  var counts = S(JSON.stringify({"counts":counts_arr}));
+                  }
+                  else {
+var counts = S(JSON.stringify({"counts":resp.counts}));
+                  }
+counts;</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="measQubits">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+                resp = JSON.parse(resp)
+                  if(resp.meas_qubits === undefined ){
+                  	var meas_arr = []
+                  	for each (var val in resp) meas_arr.push(val.meas_qubits)     
+                  	print(meas_arr)
+                  var meas_qubits = S(JSON.stringify({"meas_qubits":meas_arr}));
+                  }
+                  else {
+    
+                var meas_qubits = "["+resp.meas_qubits.toString()+"]";
+                  }
+								meas_qubits;</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="circuitDepthTranspiled">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+                resp = JSON.parse(resp)
+                  if(resp.transpiled_circuit_depth === undefined ){
+                  	var depth_arr = []
+                  	for each (var val in resp) depth_arr.push(val.transpiled_circuit_depth)     
+                  	print(depth_arr)
+                  var circuitDepthTranspiled = S(JSON.stringify({"transpiled_circuit_depth":depth_arr}));
+                  }
+                  else {
+                var circuitDepthTranspiled = resp.transpiled_circuit_depth;
+                  }
+								circuitDepthTranspiled;</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="provider">ibm</camunda:inputParameter>
+            <camunda:inputParameter name="qpu">aer_qasm_simulator</camunda:inputParameter>
+            <camunda:inputParameter name="shots">2000</camunda:inputParameter>
+            <camunda:inputParameter name="programmingLanguage">qiskit</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_1g4nyfq</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0rvah9x</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="Task_000xzf9" name="Evaluate Results">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Accept">application/json</camunda:entry>
+                  <camunda:entry key="Content-Type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/objective-evaluation/objective/max-cut</camunda:inputParameter>
+              <camunda:inputParameter name="payload">
+                <camunda:script scriptFormat="JavaScript">print("Start Evaluation");
+                var matrix = execution.getVariable("adjMatrix");
+                matrix = matrix.substring(1,matrix.length-1).replaceAll(" ", "");
+                matrix = matrix.split("],[");
+								new_matrix = []
+                for each (var arr in matrix) {
+                  new_arr = []
+                  arr = arr.replace("[","").replace("]","")
+                  numbers = arr.split(",")
+                  for each (var num in numbers){
+                    new_arr.push(parseFloat(num))
+                  }
+                  new_matrix.push(new_arr)
+                }
+					
+                var counts = execution.getVariable("mitigatedCounts")
+                if (!counts){
+                  print(execution.getVariable("counts"));
+                  counts = execution.getVariable("counts").toString(); 
+                counts = JSON.parse(counts)
+                counts = counts["counts"]
+                } else {
+                	counts= counts.toString();
+                counts = JSON.parse(counts)
+                }
+                
+                var objFun = execution.getVariable("objFun");
+
+                execution.setVariable("plotUrl", "http://localhost:8080/engine-rest/process-instance/" + execution.getProcessInstanceId() + "/variables/plot/data");
+                
+                var myJson = {"adj_matrix": new_matrix,"counts": counts,"objFun": objFun, "visualization": "True"};
+                myJson = JSON.stringify(myJson);
+                print(myJson);
+myJson =myJson;</camunda:script>
+              </camunda:inputParameter>
+              <camunda:outputParameter name="objValue">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+                resp = JSON.parse(resp)
+                var objValue = resp.objective_value;
+                print(objValue)
+								objValue;</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="evaluatedCosts">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+                resp = JSON.parse(resp)
+                var costs = resp.costs;
+                print(costs)
+                 costs = S(JSON.stringify({"costs":costs}));
+								costs;</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="plot">
+                <camunda:script scriptFormat="Groovy">import org.camunda.bpm.engine.variable.value.FileValue
+								import org.camunda.bpm.engine.variable.Variables
+                import groovy.json.JsonSlurper
+                def slurper = new JsonSlurper().parseText(response)
+								String filename = "plot.png";
+								FileValue typedFileValue = Variables.fileValue(filename).file(slurper.visualization.decodeBase64()).mimeType("application/png").create()
+typedFileValue</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="objectiveFunction">expectationValue</camunda:inputParameter>
+            <camunda:inputParameter name="costFunction">maxcut</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_0iwls0z</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_03d0zlb</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:subProcess id="Task_00xcokl">
+        <bpmn:extensionElements>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="optimizer">cobyla</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_123mbe9</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0wggqgf</bpmn:outgoing>
+        <bpmn:startEvent id="StartEvent_19ckhmh">
+          <bpmn:outgoing>SequenceFlow_0rmpg6o</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:exclusiveGateway id="ExclusiveGateway_0gfnlod" name="Is first Iteration?">
+          <bpmn:incoming>SequenceFlow_0rmpg6o</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0kwdu9e</bpmn:outgoing>
+          <bpmn:outgoing>SequenceFlow_0xzz2ve</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:exclusiveGateway id="ExclusiveGateway_0urwdng">
+          <bpmn:incoming>SequenceFlow_0kwdu9e</bpmn:incoming>
+          <bpmn:incoming>SequenceFlow_1jhumy5</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0z9q64z</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:endEvent id="EndEvent_0iwzd3z">
+          <bpmn:incoming>SequenceFlow_0jq787k</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:serviceTask id="ServiceTask_1sim1d2" name="Initialize Optimizer">
+          <bpmn:extensionElements>
+            <camunda:connector>
+              <camunda:inputOutput>
+                <camunda:inputParameter name="method">POST</camunda:inputParameter>
+                <camunda:inputParameter name="headers">
+                  <camunda:map>
+                    <camunda:entry key="Accept">application/json</camunda:entry>
+                    <camunda:entry key="Content-Type">application/json</camunda:entry>
+                  </camunda:map>
+                </camunda:inputParameter>
+                <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/optimization/optimization-service</camunda:inputParameter>
+                <camunda:inputParameter name="payload">
+                  <camunda:script scriptFormat="JavaScript">var optimizer = execution.getVariable("optimizer");
+                  var gammas = execution.getVariable("gammas");
+                  var betas = execution.getVariable("betas");
+                  execution.setVariable("iterations", 0);
+
+                  gammas = gammas.substring(1, gammas.length-1)
+                  gammas = gammas.split(",")
+                  print(gammas[0]);
+                  array = [];
+                  for each (var el in gammas) array.push(parseFloat(el));
+                  gammas = array
+
+                  betas = betas.substring(1, betas.length-1)
+                  betas = betas.split(",")
+                  print(betas[0]);
+                  array_b = [];
+                  for each (var el in betas) array.push(parseFloat(el));
+                  betas = array_b
+
+                  initialParameters = betas.concat(gammas)
+
+                  var myJson = {"topic": "123",
+  "optimizer": optimizer,"initialParameters": initialParameters};
+
+  myJson = JSON.stringify(myJson);
+  print(myJson);
+  myJson =myJson;</camunda:script>
+                </camunda:inputParameter>
+                <camunda:outputParameter name="optimizerInit">
+                  <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+                  print(resp)
+  resp;</camunda:script>
+                </camunda:outputParameter>
+                <camunda:outputParameter name="iterations">
+                  <camunda:script scriptFormat="JavaScript">var iterations = connector.getVariable("iterations");
+iterations = iterations + 1
+iterations</camunda:script>
+                </camunda:outputParameter>
+                <camunda:outputParameter name="converged">
+                  <camunda:script scriptFormat="JavaScript">"false"</camunda:script>
+                </camunda:outputParameter>
+              </camunda:inputOutput>
+              <camunda:connectorId>http-connector</camunda:connectorId>
+            </camunda:connector>
+          </bpmn:extensionElements>
+          <bpmn:incoming>SequenceFlow_0xzz2ve</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_1jhumy5</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:serviceTask id="ServiceTask_027m5n0" name="Optimizer Parameters" camunda:type="external" camunda:topic="123">
+          <bpmn:extensionElements>
+            <camunda:inputOutput>
+              <camunda:outputParameter name="iterations">
+                <camunda:script scriptFormat="JavaScript">var iterations = execution.getVariable("iterations");
+							iterations = iterations + 1
+							iterations</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+          </bpmn:extensionElements>
+          <bpmn:incoming>SequenceFlow_0z9q64z</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0jq787k</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="SequenceFlow_0rmpg6o" sourceRef="StartEvent_19ckhmh" targetRef="ExclusiveGateway_0gfnlod" />
+        <bpmn:sequenceFlow id="SequenceFlow_0kwdu9e" name="No" sourceRef="ExclusiveGateway_0gfnlod" targetRef="ExclusiveGateway_0urwdng">
+          <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('iterations')!= null &amp;&amp; execution.getVariable('iterations') &gt;= 1}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow id="SequenceFlow_0xzz2ve" name="Yes" sourceRef="ExclusiveGateway_0gfnlod" targetRef="ServiceTask_1sim1d2">
+          <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('iterations')== null || execution.getVariable('iterations') &lt; 1}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow id="SequenceFlow_1jhumy5" sourceRef="ServiceTask_1sim1d2" targetRef="ExclusiveGateway_0urwdng" />
+        <bpmn:sequenceFlow id="SequenceFlow_0z9q64z" sourceRef="ExclusiveGateway_0urwdng" targetRef="ServiceTask_027m5n0" />
+        <bpmn:sequenceFlow id="SequenceFlow_0jq787k" sourceRef="ServiceTask_027m5n0" targetRef="EndEvent_0iwzd3z" />
+      </bpmn:subProcess>
+    </bpmn:subProcess>
+    <bpmn:serviceTask id="Task_009hsrk" name="Generate Circuits">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Accept">application/json</camunda:entry>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-generation/algorithms/maxcutqaoa</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="JavaScript">var matrix = execution.getVariable("adjMatrix");
+                var p = execution.getVariable("p");
+                
+                matrix = matrix.substring(1,matrix.length-1).replaceAll(" ", "");
+                matrix = matrix.split("],[");
+								new_matrix = []
+                for each (var arr in matrix) {
+                  new_arr = []
+                  arr = arr.replace("[","").replace("]","")
+                  numbers = arr.split(",")
+                  for each (var num in numbers){
+                    new_arr.push(parseFloat(num))
+                  }
+                  new_matrix.push(new_arr)
+                }
+                  
+  
+                var myJson = {"adj_matrix": new_matrix,"p": p, "parameterized": "true"};
+				if (execution.getVariable("wsBitstring") !== null){
+                	myJson["initial_state"]= execution.getVariable("wsBitstring")
+				}
+
+myJson = JSON.stringify(myJson);
+myJson =myJson</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="circuit">
+              <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response");
+			var result = S(resp);  
+			qasm = result.prop("circuit");
+            qasm = S(JSON.stringify({"circuit":qasm.value()}));
+qasm;</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="circuitDepthUntranspiled">
+              <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+                resp = JSON.parse(resp)
+                var circuitDepthUntranspiled = resp.depth;
+                print(circuitDepthUntranspiled)
+								circuitDepthUntranspiled;</camunda:script>
+            </camunda:outputParameter>
+            <camunda:outputParameter name="circuitNumQubits">
+              <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
+                resp = JSON.parse(resp)
+                var circuitNumQubits = resp.n_qubits;
+                print(circuitNumQubits)
+								circuitNumQubits;</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="url">quokka/maxcut</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_114600l</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0cc39h7</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_070m5p1">
+      <bpmndi:BPMNEdge id="SequenceFlow_1ir2z8n_di" bpmnElement="SequenceFlow_1ir2z8n">
+        <di:waypoint x="2422" y="299.5" />
+        <di:waypoint x="2472" y="299.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0cc39h7_di" bpmnElement="SequenceFlow_0cc39h7">
+        <di:waypoint x="346" y="300" />
+        <di:waypoint x="396" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_114600l_di" bpmnElement="SequenceFlow_114600l">
+        <di:waypoint x="148" y="300" />
+        <di:waypoint x="246" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0pjq7fr_di" bpmnElement="EndEvent_0pjq7fr">
+        <dc:Bounds x="2472" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0ej6lwb_di" bpmnElement="StartEvent_0ej6lwb">
+        <dc:Bounds x="112" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_1n65mrw_di" bpmnElement="Task_13doc75" isExpanded="true">
+        <dc:Bounds x="396" y="80" width="2026" height="439" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0iwls0z_di" bpmnElement="SequenceFlow_0iwls0z">
+        <di:waypoint x="1232" y="251.5" />
+        <di:waypoint x="1282" y="251.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_033vtgl_di" bpmnElement="SequenceFlow_033vtgl">
+        <di:waypoint x="690" y="260" />
+        <di:waypoint x="711" y="260" />
+        <di:waypoint x="711" y="252" />
+        <di:waypoint x="732" y="252" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1a9gnob_di" bpmnElement="SequenceFlow_1a9gnob">
+        <di:waypoint x="532" y="252" />
+        <di:waypoint x="557" y="252" />
+        <di:waypoint x="557" y="260" />
+        <di:waypoint x="590" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0rvah9x_di" bpmnElement="SequenceFlow_0rvah9x">
+        <di:waypoint x="1007" y="292" />
+        <di:waypoint x="1061" y="292" />
+        <di:waypoint x="1061" y="252" />
+        <di:waypoint x="1132" y="252" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_14lmcjd_di" bpmnElement="SequenceFlow_14lmcjd">
+        <di:waypoint x="1457" y="276.5" />
+        <di:waypoint x="1457" y="441" />
+        <di:waypoint x="1909" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_123mbe9_di" bpmnElement="SequenceFlow_123mbe9">
+        <di:waypoint x="1482" y="251.5" />
+        <di:waypoint x="1532" y="251.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_03d0zlb_di" bpmnElement="SequenceFlow_03d0zlb">
+        <di:waypoint x="1382" y="251.5" />
+        <di:waypoint x="1432" y="251.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1g4nyfq_di" bpmnElement="SequenceFlow_1g4nyfq">
+        <di:waypoint x="782" y="252" />
+        <di:waypoint x="845" y="252" />
+        <di:waypoint x="845" y="272" />
+        <di:waypoint x="907" y="272" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0wggqgf_di" bpmnElement="SequenceFlow_0wggqgf">
+        <di:waypoint x="1625.9380530973451" y="373" />
+        <di:waypoint x="1507" y="421" />
+        <di:waypoint x="1457" y="421" />
+        <di:waypoint x="1407" y="421" />
+        <di:waypoint x="1332" y="421" />
+        <di:waypoint x="1257" y="421" />
+        <di:waypoint x="1182" y="421" />
+        <di:waypoint x="1107" y="421" />
+        <di:waypoint x="1032" y="421" />
+        <di:waypoint x="957" y="421" />
+        <di:waypoint x="882" y="421" />
+        <di:waypoint x="807" y="421" />
+        <di:waypoint x="757" y="276.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1duzs3w_di" bpmnElement="EndEvent_1duzs3w">
+        <dc:Bounds x="1909" y="423" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="496" y="234" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1xnhepr_di" bpmnElement="ExclusiveGateway_1xnhepr" isMarkerVisible="true">
+        <dc:Bounds x="1432" y="227" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0lo42en_di" bpmnElement="ExclusiveGateway_0lo42en" isMarkerVisible="true">
+        <dc:Bounds x="732" y="227" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0xcr795_di" bpmnElement="ServiceTask_0xcr795">
+        <dc:Bounds x="590" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0e6oruo_di" bpmnElement="ServiceTask_0e6oruo">
+        <dc:Bounds x="1132" y="212" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_07sibnv_di" bpmnElement="Task_000xzf9">
+        <dc:Bounds x="1282" y="212" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0j0aasi_di" bpmnElement="Task_1i5jbsg">
+        <dc:Bounds x="907" y="232" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_1qe2qrq_di" bpmnElement="Task_00xcokl" isExpanded="true">
+        <dc:Bounds x="1532" y="130" width="790" height="243" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0jq787k_di" bpmnElement="SequenceFlow_0jq787k">
+        <di:waypoint x="2136" y="198" />
+        <di:waypoint x="2186" y="198" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0z9q64z_di" bpmnElement="SequenceFlow_0z9q64z">
+        <di:waypoint x="1986" y="198" />
+        <di:waypoint x="2036" y="198" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1jhumy5_di" bpmnElement="SequenceFlow_1jhumy5">
+        <di:waypoint x="1886" y="273" />
+        <di:waypoint x="1961" y="273" />
+        <di:waypoint x="1961" y="223" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0xzz2ve_di" bpmnElement="SequenceFlow_0xzz2ve">
+        <di:waypoint x="1711" y="223" />
+        <di:waypoint x="1711" y="273" />
+        <di:waypoint x="1786" y="273" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1749" y="249" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0kwdu9e_di" bpmnElement="SequenceFlow_0kwdu9e">
+        <di:waypoint x="1736" y="198" />
+        <di:waypoint x="1761" y="198" />
+        <di:waypoint x="1836" y="198" />
+        <di:waypoint x="1911" y="198" />
+        <di:waypoint x="1936" y="198" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1874" y="174" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0rmpg6o_di" bpmnElement="SequenceFlow_0rmpg6o">
+        <di:waypoint x="1636" y="198" />
+        <di:waypoint x="1686" y="198" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_19ckhmh_di" bpmnElement="StartEvent_19ckhmh">
+        <dc:Bounds x="1600" y="180" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0gfnlod_di" bpmnElement="ExclusiveGateway_0gfnlod" isMarkerVisible="true">
+        <dc:Bounds x="1686" y="173" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1671" y="149" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0urwdng_di" bpmnElement="ExclusiveGateway_0urwdng" isMarkerVisible="true">
+        <dc:Bounds x="1936" y="173" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0iwzd3z_di" bpmnElement="EndEvent_0iwzd3z">
+        <dc:Bounds x="2186" y="180" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1sim1d2_di" bpmnElement="ServiceTask_1sim1d2">
+        <dc:Bounds x="1786" y="233" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_027m5n0_di" bpmnElement="ServiceTask_027m5n0">
+        <dc:Bounds x="2036" y="158" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_12k2aqg_di" bpmnElement="Task_009hsrk">
+        <dc:Bounds x="246" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

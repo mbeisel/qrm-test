@@ -14,47 +14,50 @@
                 <camunda:entry key="Content-Type">application/json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-cutting/cutCircuits</camunda:inputParameter>
-            <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="JavaScript">
-                var counts = execution.getVariable("counts");
-                var cuttingMetaData = execution.getVariable("cuttingMetaData");
-                var circuit = execution.getVariable("circuit");
-               
+            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-cutting/combineResultsQuokka</camunda:inputParameter>
+              <camunda:inputParameter name="payload">
+                <camunda:script scriptFormat="JavaScript">print("combine")
+                  var counts = execution.getVariable("counts");
+                  //counts = JSON.parse(counts)
+									//counts = counts["counts"]
+                  counts = counts.prop("counts").elements()
+                  print(execution.getVariable("counts"));
+                  print(counts)
+                  print(JSON.parse(counts[0]))
+                  print(JSON.stringify(JSON.parse(counts[0])))
+                   new_counts = []
+                for each (var val in counts) {
+                  print(val)
+                  print(JSON.stringify(JSON.parse(val)))
+                   new_counts.push(JSON.parse(val));
+                }
+                  print(new_counts)
+                  
+                var cuttingMetaData = JSON.parse(execution.getVariable("cuttingMetaData"));
+                  print(cuttingMetaData)
+                  
+                 var circuit = execution.getVariable("circuit");
+                  circuit = circuit.prop("circuit").value()
+
+                                                              
                 
-                var myJson = {"circuit": circuit, "subcircuit_results": counts, "cuts": cuttingMetaData, "unnormalized_results":"True", "shot_scaling_factor":1000};
+                var myJson = {"circuit": circuit, "subcircuit_results": new_counts, "cuts": cuttingMetaData, "unnormalized_results":"True", "shot_scaling_factor":1000, "circuit_format":"qiskit"};
                
                 
 
                 myJson = JSON.stringify(myJson);
+                  print(myJson);
 myJson =myJson;</camunda:script>
-            </camunda:inputParameter>
-            <camunda:outputParameter name="counts">
-              <camunda:script scriptFormat="JavaScript">
-var resp = connector.getVariable("response")
+              </camunda:inputParameter>
+              <camunda:outputParameter name="counts">
+                <camunda:script scriptFormat="JavaScript">var resp = connector.getVariable("response")
 resp = JSON.parse(resp)
-var counts = S(JSON.stringify({"counts":resp.counts}));
-counts;
-
-</camunda:script>
-            </camunda:outputParameter>
-            <camunda:outputParameter name="measQubits">
-              <camunda:script scriptFormat="JavaScript">
-var resp = connector.getVariable("response")
-                resp = JSON.parse(resp)
-                var meas_qubits = "["+resp.meas_qubits.toString()+"]";
-								meas_qubits;
-</camunda:script>
-            </camunda:outputParameter>
-            <camunda:outputParameter name="circuitDepthTranspiled">
-              <camunda:script scriptFormat="JavaScript">
-var resp = connector.getVariable("response")
-                resp = JSON.parse(resp)
-                var circuitDepthTranspiled = resp.transpiled_circuit_depth;
-								circuitDepthTranspiled;
-</camunda:script>
-            </camunda:outputParameter>
-          </camunda:inputOutput>
+                  print(resp);
+                  var counts = S(JSON.stringify({"counts":resp.result}));
+                 
+counts;</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
       </bpmn:extensionElements>
