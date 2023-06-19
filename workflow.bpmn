@@ -187,12 +187,12 @@ return durationMatrix;</camunda:script>
     </bpmn2:sequenceFlow>
     <bpmn2:exclusiveGateway id="Gateway_1msdcd8">
       <bpmn2:incoming>Flow_0pqisjm</bpmn2:incoming>
-      <bpmn2:incoming>Flow_03ixpie</bpmn2:incoming>
+      <bpmn2:incoming>Flow_028v4ie</bpmn2:incoming>
       <bpmn2:outgoing>Flow_164r496</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="Flow_164r496" sourceRef="Gateway_1msdcd8" targetRef="Activity_1almfwy" />
     <bpmn2:sequenceFlow id="Flow_0pqisjm" sourceRef="Activity_1l4kmzj" targetRef="Gateway_1msdcd8" />
-    <bpmn2:sequenceFlow id="Flow_03ixpie" sourceRef="Gateway_10itye2" targetRef="Gateway_1msdcd8" />
+    <bpmn2:sequenceFlow id="Flow_03ixpie" sourceRef="Gateway_10itye2" targetRef="Activity_1ijq2nd" />
     <bpmn2:exclusiveGateway id="Gateway_1thnudz" name="all Fits in 1 Truck?">
       <bpmn2:incoming>Flow_0ey4t8g</bpmn2:incoming>
       <bpmn2:outgoing>Flow_0wg476a</bpmn2:outgoing>
@@ -568,6 +568,11 @@ execution.setVariable("currentRoute", currentDestinations.getClass().newInstance
 </bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="Flow_1hg6fer" sourceRef="Activity_10850lh" targetRef="Gateway_0bjl6g0" />
+    <bpmn2:task id="Activity_1ijq2nd">
+      <bpmn2:incoming>Flow_03ixpie</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_028v4ie</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="Flow_028v4ie" sourceRef="Activity_1ijq2nd" targetRef="Gateway_1msdcd8" />
   </bpmn2:process>
   <bpmn2:message id="Message_0p4fck4" name="Message_0p4fck4" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -627,6 +632,9 @@ execution.setVariable("currentRoute", currentDestinations.getClass().newInstance
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1005" y="225" width="89" height="53" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ijq2nd_di" bpmnElement="Activity_1ijq2nd">
+        <dc:Bounds x="460" y="20" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0wta08t_di" bpmnElement="Activity_1lsauc4" isExpanded="true">
         <dc:Bounds x="1160" y="42" width="1012" height="295" />
@@ -910,7 +918,7 @@ execution.setVariable("currentRoute", currentDestinations.getClass().newInstance
       <bpmndi:BPMNEdge id="Flow_03ixpie_di" bpmnElement="Flow_03ixpie">
         <di:waypoint x="2265" y="550" />
         <di:waypoint x="510" y="550" />
-        <di:waypoint x="510" y="-45" />
+        <di:waypoint x="510" y="100" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0wg476a_di" bpmnElement="Flow_0wg476a">
         <di:waypoint x="885" y="-70" />
@@ -985,6 +993,10 @@ execution.setVariable("currentRoute", currentDestinations.getClass().newInstance
         <di:waypoint x="1880" y="-400" />
         <di:waypoint x="2500" y="-400" />
         <di:waypoint x="2500" y="-95" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_028v4ie_di" bpmnElement="Flow_028v4ie">
+        <di:waypoint x="510" y="20" />
+        <di:waypoint x="510" y="-45" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
