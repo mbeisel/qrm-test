@@ -2,22 +2,22 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
   <bpmn2:process id="Process_1" isExecutable="false">
     <bpmn2:startEvent id="StartEvent_1">
-      <bpmn2:outgoing>Flow_1cuagv8</bpmn2:outgoing>
+      <bpmn2:outgoing>Flow_0yudf0f</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:task id="Activity_1huph5r">
-      <bpmn2:incoming>Flow_1cuagv8</bpmn2:incoming>
-    </bpmn2:task>
-    <bpmn2:sequenceFlow id="Flow_1cuagv8" sourceRef="StartEvent_1" targetRef="Activity_1huph5r" />
+    <bpmn2:sequenceFlow id="Flow_0yudf0f" sourceRef="StartEvent_1" targetRef="Activity_0o54q8f" />
+    <bpmn2:sendTask id="Activity_0o54q8f">
+      <bpmn2:incoming>Flow_0yudf0f</bpmn2:incoming>
+    </bpmn2:sendTask>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="412" y="240" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1huph5r_di" bpmnElement="Activity_1huph5r">
+      <bpmndi:BPMNShape id="Activity_1s3l7k0_di" bpmnElement="Activity_0o54q8f">
         <dc:Bounds x="500" y="218" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1cuagv8_di" bpmnElement="Flow_1cuagv8">
+      <bpmndi:BPMNEdge id="Flow_0yudf0f_di" bpmnElement="Flow_0yudf0f">
         <di:waypoint x="448" y="258" />
         <di:waypoint x="500" y="258" />
       </bpmndi:BPMNEdge>
