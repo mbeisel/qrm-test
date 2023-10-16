@@ -40,7 +40,7 @@
       <bpmn:incoming>Flow_0czrsh0</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_134gyga</bpmn:outgoing>
     </bpmn:userTask>
-    <quantme:quantumCircuitExecutionTask id="QuantumCircuitExecutionTask_11q8xh3" name="Execute QAOA Circuits" provider="ibm" qpu="aer_qasm_simulator" shots="2000" programmingLanguage="qiskit">
+    <quantme:quantumCircuitExecutionTask id="QuantumCircuitExecutionTask_11q8xh3" name="Execute QAOA Circuits" provider="ibm" qpu="aer_qasm_simulator" shots="2000" programmingLanguage="openqasm">
       <bpmn:incoming>Flow_18kx5os</bpmn:incoming>
       <bpmn:outgoing>Flow_0jxgw9i</bpmn:outgoing>
     </quantme:quantumCircuitExecutionTask>
@@ -101,18 +101,18 @@
       <bpmndi:BPMNShape id="UserTask_06awxe9_di" bpmnElement="Task_1h88ddf">
         <dc:Bounds x="1160" y="215" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_0pjq7fr_di" bpmnElement="EndEvent_0pjq7fr">
-        <dc:Bounds x="1282" y="237" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0pj22b3" bpmnElement="Gateway_0qaj4kt" isMarkerVisible="true">
         <dc:Bounds x="465" y="230" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="StartEvent_0ej6lwb_di" bpmnElement="StartEvent_0ej6lwb">
         <dc:Bounds x="402" y="237" width="36" height="36" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0pjq7fr_di" bpmnElement="EndEvent_0pjq7fr">
+        <dc:Bounds x="1292" y="237" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_134gyga_di" bpmnElement="SequenceFlow_134gyga">
         <di:waypoint x="1260" y="255" />
-        <di:waypoint x="1282" y="255" />
+        <di:waypoint x="1292" y="255" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_17fnx68" bpmnElement="Flow_1m60wcg">
         <di:waypoint x="515" y="255" />
