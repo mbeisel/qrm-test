@@ -74,6 +74,11 @@
     <bpmn:sequenceFlow id="Flow_0wlfysg" sourceRef="ParameterOptimizationTask_01m89mt" targetRef="Gateway_0wq36cd" />
     <bpmn:sequenceFlow id="Flow_05sf6lt" sourceRef="ResultEvaluationTask_0933y5e" targetRef="ParameterOptimizationTask_01m89mt" />
     <quantme:quantumHardwareSelectionSubprocess id="Activity_1p2awjj" name="Select Hardware" providers="ibm" simulatorsAllowed="true" selectionStrategy="Shortest-Queue">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="circuitLanguage">openqasm</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_18kx5os</bpmn:incoming>
       <bpmn:outgoing>Flow_11f62wp</bpmn:outgoing>
       <bpmn:startEvent id="Event_0ha18o7">
@@ -81,9 +86,7 @@
       </bpmn:startEvent>
       <quantme:quantumCircuitExecutionTask id="QuantumCircuitExecutionTask_1dyvma5" name="Execute QAOA Circuits" provider="ibm" qpu="aer_qasm_simulator" shots="2000" programmingLanguage="openqasm">
         <bpmn:extensionElements>
-          <camunda:inputOutput>
-            <camunda:inputParameter name="circuitLanguage">openqasm</camunda:inputParameter>
-          </camunda:inputOutput>
+          <camunda:inputOutput />
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_1d2heqf</bpmn:incoming>
         <bpmn:outgoing>Flow_1o5eks8</bpmn:outgoing>
