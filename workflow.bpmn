@@ -73,7 +73,7 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0wlfysg" sourceRef="ParameterOptimizationTask_01m89mt" targetRef="Gateway_0wq36cd" />
     <bpmn:sequenceFlow id="Flow_05sf6lt" sourceRef="ResultEvaluationTask_0933y5e" targetRef="ParameterOptimizationTask_01m89mt" />
-    <quantme:quantumHardwareSelectionSubprocess id="Activity_1p2awjj" name="Select Hardware" providers="ibm" simulatorsAllowed="true" selectionStrategy="Shortest-Queue">
+    <quantme:quantumHardwareSelectionSubprocess id="Activity_1p2awjj" name="Select Hardware" providers="ibmq" simulatorsAllowed="true" selectionStrategy="Shortest-Queue">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="circuitLanguage">openqasm</camunda:inputParameter>
