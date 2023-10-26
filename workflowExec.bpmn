@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:quantme="https://github.com/UST-QuAntiL/QuantME-Quantum4BPMN" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="Process_1" isExecutable="true">
+    <bpmn2:startEvent id="StartEvent_1">
+      <bpmn2:outgoing>Flow_0t596qm</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <quantme:quantumCircuitExecutionTask id="QuantumCircuitExecutionTask_1dyvma5" name="Execute QAOA Circuits" provider="ibm" qpu="aer_qasm_simulator" shots="2000" programmingLanguage="openqasm">
+      <bpmn2:extensionElements>
+        <camunda:inputOutput />
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>Flow_0t596qm</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0ju9y3p</bpmn2:outgoing>
+    </quantme:quantumCircuitExecutionTask>
+    <bpmn2:sequenceFlow id="Flow_0t596qm" sourceRef="StartEvent_1" targetRef="QuantumCircuitExecutionTask_1dyvma5" />
+    <bpmn2:endEvent id="Event_13twylc">
+      <bpmn2:incoming>Flow_0ju9y3p</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="Flow_0ju9y3p" sourceRef="QuantumCircuitExecutionTask_1dyvma5" targetRef="Event_13twylc" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="412" y="240" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0tjmb6w" bpmnElement="QuantumCircuitExecutionTask_1dyvma5">
+        <dc:Bounds x="560" y="260" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_13twylc_di" bpmnElement="Event_13twylc">
+        <dc:Bounds x="772" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0t596qm_di" bpmnElement="Flow_0t596qm">
+        <di:waypoint x="448" y="258" />
+        <di:waypoint x="504" y="258" />
+        <di:waypoint x="504" y="300" />
+        <di:waypoint x="560" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ju9y3p_di" bpmnElement="Flow_0ju9y3p">
+        <di:waypoint x="660" y="300" />
+        <di:waypoint x="772" y="300" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
