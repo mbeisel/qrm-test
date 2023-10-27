@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:opentosca="https://github.com/UST-QuAntiL/OpenTOSCA" id="Definitions_0wzkc0b" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20230126">
+  <bpmn:process id="Process_070m5p1" isExecutable="true">
+    <bpmn:subProcess id="Task_009hsrk" name="Generate Circuits" camunda:asyncAfter="true" opentosca:onDemandDeployment="true" opentosca:deploymentModelUrl="http://192.168.1.102:8093/winery/servicetemplates/http%253A%252F%252Fquantil.org%252Fquantme%252Fpush/QuokkaCircuitGeneratorService_w1/?csar">
+      <bpmn:startEvent id="Event_0v91hu0">
+        <bpmn:outgoing>Flow_0mtq48e</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:scriptTask id="Activity_0mitgm7" name="Create deployment" scriptFormat="javascript">
+        <bpmn:incoming>Flow_0mtq48e</bpmn:incoming>
+        <bpmn:outgoing>Flow_0r5z7xv</bpmn:outgoing>
+        <bpmn:script>
+var params = {"opentoscaEndpoint":"http://192.168.1.102:1337/csars","deploymentModelUrl":"http://192.168.1.102:8093/winery/servicetemplates/http%253A%252F%252Fquantil.org%252Fquantme%252Fpush/QuokkaCircuitGeneratorService_w1/?csar","subprocessId":"Task_009hsrk","camundaTopic":"BA9hoHOhwfrw","camundaEndpoint":"http://localhost:8090/engine-rest"};
+params.csarName = "ondemand_" + (Math.random().toString().substring(3));
+
+
+function fetch(method, url, body) {
+    try {
+        var resourceURL = new java.net.URL(url);
+    
+        var urlConnection = resourceURL.openConnection();
+        urlConnection.setRequestMethod(method);
+        urlConnection.setRequestProperty("Accept", "application/json");
+        if (body) {
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            var outputStream = urlConnection.getOutputStream()
+            var outputStreamWriter = new java.io.OutputStreamWriter(outputStream)
+            outputStreamWriter.write(body);
+            outputStreamWriter.flush();
+            outputStreamWriter.close();
+            outputStream.close();
+        }
+    
+        var inputStream = new java.io.InputStreamReader(urlConnection
+            .getInputStream());
+        var bufferedReader = new java.io.BufferedReader(inputStream);
+        var inputLine = ""
+        var text = "";
+        var i = 5;
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            text += inputLine
+        }
+        bufferedReader.close();
+        java.lang.System.out.println("Response from " + url + ": " + text);
+        return text;
+    } catch (e) {
+        java.lang.System.err.println(e);
+        throw e;
+    }
+}
+
+
+var createCsarResponse = fetch('POST', params.opentoscaEndpoint, JSON.stringify({
+    enrich: 'false',
+    name: params.csarName,
+    url: params.deploymentModelUrl
+}))
+
+
+var serviceTemplates = JSON.parse(fetch('GET', params.opentoscaEndpoint + "/" + params.csarName + ".csar/servicetemplates"))
+var buildPlansUrl = serviceTemplates.service_templates[0]._links.self.href + '/buildplans'
+var buildPlans = JSON.parse(fetch('GET', buildPlansUrl))
+var buildPlanUrl = buildPlans.plans[0]._links.self.href
+var inputParameters = JSON.parse(fetch('GET', buildPlanUrl)).input_parameters
+for(var i = 0; i &lt; inputParameters.length; i++) {
+    if(inputParameters[i].name === "camundaEndpoint") {
+        inputParameters[i].value = params.opentoscaEndpoint
+    } else if(inputParameters[i].name === "camundaTopic") {
+        inputParameters[i].value = params.camundaTopic
+    } else {
+        inputParameters[i].value = "null"
+    }
+}
+var createInstanceResponse = fetch('POST', buildPlanUrl + "/instances", JSON.stringify(inputParameters))
+execution.setVariable(params.subprocessId + "_deploymentBuildPlanInstanceUrl", buildPlanUrl + "/instances/" + createInstanceResponse);</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_0mtq48e" sourceRef="Event_0v91hu0" targetRef="Activity_0mitgm7" />
+      <bpmn:scriptTask id="Activity_0pylp6b" name="Wait for deployment" scriptFormat="javascript">
+        <bpmn:incoming>Flow_0r5z7xv</bpmn:incoming>
+        <bpmn:outgoing>Flow_1ibi824</bpmn:outgoing>
+        <bpmn:script>
+var params = {"subprocessId":"Task_009hsrk"};
+
+
+function fetch(method, url, body) {
+    try {
+        var resourceURL = new java.net.URL(url);
+    
+        var urlConnection = resourceURL.openConnection();
+        urlConnection.setRequestMethod(method);
+        urlConnection.setRequestProperty("Accept", "application/json");
+        if (body) {
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            var outputStream = urlConnection.getOutputStream()
+            var outputStreamWriter = new java.io.OutputStreamWriter(outputStream)
+            outputStreamWriter.write(body);
+            outputStreamWriter.flush();
+            outputStreamWriter.close();
+            outputStream.close();
+        }
+    
+        var inputStream = new java.io.InputStreamReader(urlConnection
+            .getInputStream());
+        var bufferedReader = new java.io.BufferedReader(inputStream);
+        var inputLine = ""
+        var text = "";
+        var i = 5;
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            text += inputLine
+        }
+        bufferedReader.close();
+        java.lang.System.out.println("Response from " + url + ": " + text);
+        return text;
+    } catch (e) {
+        java.lang.System.err.println(e);
+        throw e;
+    }
+}
+var buildPlanInstanceUrl = execution.getVariable(params.subprocessId + "_deploymentBuildPlanInstanceUrl");
+var instanceUrl;
+for(var i = 0; i &lt; 30; i++) {
+    try {
+        instanceUrl = JSON.parse(fetch('GET', buildPlanInstanceUrl))._links.service_template_instance.href; 
+        if (instanceUrl) break;
+     } catch (e) {
+     }
+     java.lang.Thread.sleep(2000);
+}
+
+java.lang.System.out.println("InstanceUrl: " + instanceUrl);
+
+for(var i = 0; i &lt; 30 * 8; i++) {
+    try {
+        var createInstanceResponse = fetch('GET', instanceUrl);
+        var instance = JSON.parse(createInstanceResponse).service_template_instances;
+        if (instance &amp;&amp; instance.state === "CREATED") {
+            break;
+        }
+     } catch (e) {
+     }
+     java.lang.Thread.sleep(2000);
+}
+
+var properties = JSON.parse(fetch('GET', instanceUrl + "/properties"));
+ 
+execution.setVariable("selfserviceApplicationUrl", properties.selfserviceApplicationUrl);
+java.lang.Thread.sleep(12000);
+</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_0r5z7xv" sourceRef="Activity_0mitgm7" targetRef="Activity_0pylp6b" />
+      <bpmn:serviceTask id="Activity_03j08tl" name="Call service">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Accept">application/json</camunda:entry>
+                  <camunda:entry key="Content-Type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">${selfserviceApplicationUrl.concat("http://quokka-gateway:6474/quokka/circuit-generation/algorithms/maxcutqaoa")}</camunda:inputParameter>
+              <camunda:inputParameter name="payload">
+                <camunda:script scriptFormat="groovy">
+			    			    import groovy.json.JsonBuilder
+                  def matrix = execution.getVariable("adjMatrix");
+                  def gammas = execution.getVariable("gammas");
+                  def betas = execution.getVariable("betas");
+                  def request = [:];
+
+                    if (matrix instanceof String) {
+                        println("Received matrix of type string: " + matrix);
+                        matrix = matrix.drop(1).take(matrix.length()-2);
+                        matrix= matrix.replaceAll("\\s","").split("\\],\\[");
+                        println("Separated matrix: " + matrix.toString());
+
+                        new_matrix = []
+                        for (el in matrix){
+                            def current_array = el.replaceAll("\\[","").replaceAll("\\]","")
+                            println("Current array: " + current_array.toString());
+                            new_arr = [];
+                            def numbers = current_array.split(",");
+                            println("Numbers: " + numbers.toString());
+
+                            for (number in numbers){
+                                new_arr.push(number.toDouble());
+                            }
+                            new_matrix.push(new_arr);
+                        }
+
+                        matrix = new_matrix;
+                        println("Matrix after parsing: " + matrix.toString());
+                        execution.setVariable("adjMatrix", matrix);
+                    }
+
+                  if (gammas instanceof String) {
+                             def current_gammas = gammas.replaceAll("\\[","").replaceAll("\\]","")
+                              println("Current gammas: " + current_gammas.toString());
+                              new_gammas = [];
+                              def numbers = current_gammas.split(",");
+                              for (number in numbers){
+                                  new_gammas.push(number.toDouble());
+                              }
+                              gammas = new_gammas
+                              execution.setVariable("gammas", gammas);
+                  }
+
+                    if (betas instanceof String) {
+                               def current_betas = betas.replaceAll("\\[","").replaceAll("\\]","")
+                                println("Current betas: " + current_betas.toString());
+                                new_betas = [];
+                                def numbers = current_betas.split(",");
+                                for (number in numbers){
+                                    new_betas.push(number.toDouble());
+                                }
+                                betas = new_betas
+                                execution.setVariable("betas", betas);
+                    }
+
+                request.put("adj_matrix", matrix);
+                  request.put("parameterized", "false");
+                  request.put("p", 1);
+                    request.put("gammas", gammas);
+                    request.put("betas", betas);
+                  if (execution.getVariable("wsBitstring") != null) {
+                    request.put("initial_state", execution.getVariable("wsBitstring"));
+                  }
+                  requeststring = new JsonBuilder(request).toPrettyString()
+                  print("test")
+                  print(requeststring)
+                  return requeststring;
+</camunda:script>
+              </camunda:inputParameter>
+              <camunda:outputParameter name="circuit">
+                <camunda:script scriptFormat="groovy">
+def resp = connector.getVariable("response");
+resp = new groovy.json.JsonSlurper().parseText(resp)
+circuit= resp.get('circuit')
+println(circuit);
+return [circuit];</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="circuitDepthUntranspiled">
+                <camunda:script scriptFormat="groovy">
+def resp = connector.getVariable("response");
+resp = new groovy.json.JsonSlurper().parseText(resp)
+depth= resp.get('depth')
+println(depth);
+return depth;</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="circuitNumQubits">
+                <camunda:script scriptFormat="groovy">
+def resp = connector.getVariable("response");
+resp = new groovy.json.JsonSlurper().parseText(resp)
+n_qubits= resp.get('n_qubits')
+println(n_qubits);
+return n_qubits;</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">quokka/maxcut</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1ibi824</bpmn:incoming>
+        <bpmn:outgoing>Flow_0z8megs</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1ibi824" sourceRef="Activity_0pylp6b" targetRef="Activity_03j08tl" />
+      <bpmn:endEvent id="Event_038o29x">
+        <bpmn:incoming>Flow_0z8megs</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_0z8megs" sourceRef="Activity_03j08tl" targetRef="Event_038o29x" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_070m5p1">
+      <bpmndi:BPMNShape id="Activity_0ev0bqw_di" bpmnElement="Task_009hsrk">
+        <dc:Bounds x="80" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1qjp1xm">
+    <bpmndi:BPMNPlane id="BPMNPlane_0oo98i2" bpmnElement="Task_009hsrk">
+      <bpmndi:BPMNShape id="Event_0v91hu0_di" bpmnElement="Event_0v91hu0">
+        <dc:Bounds x="182" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mitgm7_di" bpmnElement="Activity_0mitgm7">
+        <dc:Bounds x="350" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pylp6b_di" bpmnElement="Activity_0pylp6b">
+        <dc:Bounds x="550" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03j08tl_di" bpmnElement="Activity_03j08tl">
+        <dc:Bounds x="750" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_038o29x_di" bpmnElement="Event_038o29x">
+        <dc:Bounds x="982" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0mtq48e_di" bpmnElement="Flow_0mtq48e">
+        <di:waypoint x="218" y="200" />
+        <di:waypoint x="350" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0r5z7xv_di" bpmnElement="Flow_0r5z7xv">
+        <di:waypoint x="450" y="200" />
+        <di:waypoint x="550" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ibi824_di" bpmnElement="Flow_1ibi824">
+        <di:waypoint x="650" y="200" />
+        <di:waypoint x="750" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z8megs_di" bpmnElement="Flow_0z8megs">
+        <di:waypoint x="850" y="200" />
+        <di:waypoint x="982" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
