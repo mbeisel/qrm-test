@@ -1,239 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:opentosca="https://github.com/UST-QuAntiL/OpenTOSCA" id="Definitions_0wzkc0b" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20230126">
-  <bpmn:process id="Process_070m5p1" isExecutable="true">
-    <bpmn:endEvent id="EndEvent_0pjq7fr">
-      <bpmn:incoming>SequenceFlow_134gyga</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:startEvent id="StartEvent_0ej6lwb">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="adjMatrix" label="Array containing adj_matrix" type="string" defaultValue="[[0,3,3,6,9,1],[3,0,4,4,-8,4],[3,4,0,3,-7,1],[6,4,3,0,-7,6],[9,-8,-7,-7,0,-5],[1,4,1,6,-5,0]]" />
-          <camunda:formField id="quantum_token_ibmq" label="IBMQ Token" type="string" />
-          <camunda:formField id="hub" label="IBMQ Hub" type="string" defaultValue="ibm-q" />
-          <camunda:formField id="group" label="IBMQ Group" type="string" defaultValue="open" />
-          <camunda:formField id="project" label="IBMQ Project" type="string" defaultValue="main" />
-          <camunda:formField id="ibmqUrl" label="IBMQ URL" type="string" defaultValue="https://auth.quantum-computing.ibm.com/api" />
-          <camunda:formField id="qpu" label="IBMQ Backend name" type="string" defaultValue="simulator" />
-          <camunda:formField id="noiseModel" label="Noise Model" type="string" />
-          <camunda:formField id="onlyMeasurementErrors" label="Noise Model contains only measurement errors" type="boolean" />
-          <camunda:formField id="gammas" label="gammas" type="string" defaultValue="[1]" />
-          <camunda:formField id="betas" label="betas" type="string" defaultValue="[1]" />
-          <camunda:formField id="HypervisorEndpoint" label="HypervisorEndpoint" type="string" defaultValue="https://idm01.bw-cloud.org:5000/v3" />
-          <camunda:formField id="HypervisorApplicationID" label="HypervisorApplicationID" type="string" defaultValue="c4393a03db254ff3854ac764d551fe13" />
-          <camunda:formField id="HypervisorApplicationSecret" label="HypervisorApplicationSecret" type="string" defaultValue="" />
-          <camunda:formField id="VMPrivateKey" label="VMPrivateKey" type="string" defaultValue="-----BEGIN RSA PRIVATE KEY-----&#10;MIIEpAIBAAKCAQEAyMv/c4dhoE8nGRuHWxvOBha0hYVF4nri4dcIHodNPUxFtnGy&#10;IZvOQEbX349syErH5wl+eJVC6CXy7Jw/YGdXG2f0r7uQg74LWboF434iudhQK2R9&#10;R+k1HMq2vIe6fPBFBKpJhYjk0KDwRh+FLDkxpkB11NqoNEE4KdESPIEkKh0/C3j4&#10;08vdZZNPeGuGkF0KoRw83H912d1XVY/Wxo7CLbxxjYXoG2wveZimmHY89xp+ZPbg&#10;5PoWpALblWjuV+lzaNDn9oXgrhLfOk4/8NY66Xp34om3Gwa8ulQzgkrPWT0FsVH9&#10;acHu49TFjaX39Xj5LSNdjXWT5PqZv7E3zpFMWwIDAQABAoIBAEKOc8b8edykP+Zv&#10;nIcTiU+1WPLlAQwYBXosR3GvEWgfDwBxYUUImu3tTYK5zKn7N5WaLQSVHQ9L/OB2&#10;zf8LYfEgnRdeyYERjjuYkHkehy4oyDIJ5gjfAQ7hFn8ZUjQ1g/sO4r3TaVzJ67qi&#10;mgbVkmJz/Vqne5eOgqpBtZS+jZkzbzYjQ6YmwMw6S/qXup2p69RzxuFSOCp9IHck&#10;/4jT9/hk9tVTz0wIaFS0fk3jIxhxGv3E6UiIpN1kn2HmoIsN+0Z5IXuuTSHA13MA&#10;xUNNBeVCM4JYaGH2GjjpoAPlpTK/wfYPXyWRuAewC40GpXMxoXz4L+D7nmyeJaBl&#10;/N+fQBECgYEA/klQkrgp1jhkLTlLvhHeHI6UG68kPtaWd7UuQ9Z8h0+4WTLu7+TS&#10;5Fu93AFCrtds6EG0FErDORCoH4XVOdvUyHHUjrnhuE4shYzIxZyxbm7VIhKGLgKH&#10;X7C4mv4doY6n2EQMld6WHDyA4nroExfl/xQBJdLDUog9gsKheZZ/JlMCgYEAyiZn&#10;r3mQeyyI61e+9Q80xkhefXxlOedL4fHkCO2+YkVqhoOj49zllWUAUFrSrEkue5+g&#10;YZp8eStNGjDzhYOzA/s8OO/mynYaQny942aPV6FJcMUFBguETI/xoxTBdxZ6HH6L&#10;Ku92ADJmCF7/n6raBOXQnzWI3MzdHiu4ysA08NkCgYB+qfxlqTDF0X8s+75b5kCS&#10;Tv89rwdJ+dAnvutVxVBwgmhcnj9g5cWbFIvFPCeAOjS4mIngFcGa+k4UrbChynv6&#10;gKEVm0fxa5dHyvHzZXMIhFLMTxfhcUcHhlrecbhG0m2PD46JVL/HPuggaIKTiDL7&#10;1XYg5hR/Vvf024hdrXaWmwKBgQCK2xCTx0QIZ9HxHofL21Mb9G/7cGwz9v33yOkj&#10;fPMum5INrfTwuzZ0hTlO+OQHdglY35ASG0TvEmBW4lMUXh+kV3nJfnigj7l//CGP&#10;R06lGePRc3P88AJDeQi5RbOSsrzUP9QmfPAoOHY/v8mFCp3RiW7hPauyR4KHi+7W&#10;TmrPGQKBgQDdo7sjrGwiiTYpY2DFuuGcyTx0TyBthjJe2dTfC0s+LGv0tDy57yf7&#10;Jjq4bnTTL+ETbNxXUFPmTZ6iPp4Itgm8ETFTJnrPCJJFfKm5avHomOrf2WjVp/Os&#10;6jLS0kgKqmi8ZRTgYu396yniKyza4N+IrYKFpg0m5GJUraSknrDQDA==&#10;-----END RSA PRIVATE KEY-----" />
-          <camunda:formField id="VMKeyPairName" label="VMKeyPairName" type="string" defaultValue="Orchestration" />
-        </camunda:formData>
-      </bpmn:extensionElements>
-      <bpmn:outgoing>Flow_1qkl8n3</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_134gyga" sourceRef="Task_1h88ddf" targetRef="EndEvent_0pjq7fr" />
-    <bpmn:userTask id="Task_1h88ddf" name="Analyze Results">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="plotUrl" label="Result Image URL" type="string">
-            <camunda:properties>
-              <camunda:property id="Property_39pgd42" />
-            </camunda:properties>
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
-        </camunda:formData>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0czrsh0</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_134gyga</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_0wq36cd" name="Converged?">
-      <bpmn:incoming>Flow_18kx5os</bpmn:incoming>
-      <bpmn:outgoing>Flow_0czrsh0</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0tljgkh</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:exclusiveGateway id="Gateway_0qaj4kt">
-      <bpmn:incoming>Flow_1qkl8n3</bpmn:incoming>
-      <bpmn:incoming>Flow_0tljgkh</bpmn:incoming>
-      <bpmn:outgoing>Flow_1m60wcg</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1m60wcg" sourceRef="Gateway_0qaj4kt" targetRef="Task_009hsrk" />
-    <bpmn:sequenceFlow id="Flow_0czrsh0" name="Yes" sourceRef="Gateway_0wq36cd" targetRef="Task_1h88ddf">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')!= null &amp;&amp; execution.getVariable('converged') != 'false'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_18kx5os" sourceRef="Task_009hsrk" targetRef="Gateway_0wq36cd" />
-    <bpmn:sequenceFlow id="Flow_1qkl8n3" sourceRef="StartEvent_0ej6lwb" targetRef="Gateway_0qaj4kt" />
-    <bpmn:sequenceFlow id="Flow_0tljgkh" sourceRef="Gateway_0wq36cd" targetRef="Gateway_0qaj4kt">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')== null || execution.getVariable('converged') == 'false'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="Task_009hsrk" name="Generate Circuits" camunda:asyncAfter="true" camunda:exclusive="false" opentosca:deploymentModelUrl="{{ wineryEndpoint }}/servicetemplates/http%253A%252F%252Fquantil.org%252Fquantme%252Fpush/QuokkaCircuitGeneratorService_w1/?csar">
-      <bpmn:extensionElements>
-        <camunda:connector>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:opentosca="https://github.com/UST-QuAntiL/OpenTOSCA" id="Definitions_119s2xb" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20221223">
+  <bpmn:process id="Process_1enu2om" isExecutable="true">
+    <bpmn:subProcess id="SubProcess_0y7j7vp">
+      <bpmn:startEvent id="StartEvent_06jb5q3">
+        <bpmn:outgoing>SequenceFlow_12iaeht</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:exclusiveGateway id="ExclusiveGateway_0muea1g" name="Is first Iteration?">
+        <bpmn:incoming>SequenceFlow_12iaeht</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1ebfooz</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_1lffclo</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="SequenceFlow_12iaeht" sourceRef="StartEvent_06jb5q3" targetRef="ExclusiveGateway_0muea1g" />
+      <bpmn:exclusiveGateway id="ExclusiveGateway_1ivwp1n">
+        <bpmn:incoming>SequenceFlow_1ebfooz</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_100xkhy</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0jv1zhg</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="SequenceFlow_1ebfooz" name="No" sourceRef="ExclusiveGateway_0muea1g" targetRef="ExclusiveGateway_1ivwp1n">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('iterations')!= null &amp;&amp; execution.getVariable('iterations') &gt;= 1}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_1lffclo" name="Yes" sourceRef="ExclusiveGateway_0muea1g" targetRef="Task_1pg7e2b">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('iterations')== null || execution.getVariable('iterations') &lt; 1}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_100xkhy" sourceRef="Task_1pg7e2b" targetRef="ExclusiveGateway_1ivwp1n" />
+      <bpmn:sequenceFlow id="SequenceFlow_0jv1zhg" sourceRef="ExclusiveGateway_1ivwp1n" targetRef="Task_0twvhh9" />
+      <bpmn:endEvent id="EndEvent_191hgmf">
+        <bpmn:incoming>SequenceFlow_1hst7js</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_1hst7js" sourceRef="Task_0twvhh9" targetRef="EndEvent_191hgmf" />
+      <bpmn:serviceTask id="Task_1pg7e2b" name="Initialize Optimizer" camunda:asyncAfter="true" camunda:exclusive="false" opentosca:deploymentModelUrl="{{ wineryEndpoint }}/servicetemplates/http%253A%252F%252Fquantil.org%252Fquantme%252Fpush/QuokkaOptimizationService_w1/?csar">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Accept">application/json</camunda:entry>
+                  <camunda:entry key="Content-Type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/optimization/optimization-service</camunda:inputParameter>
+              <camunda:inputParameter name="payload">
+                <camunda:script scriptFormat="groovy">
+			          import groovy.json.JsonBuilder
+                def optimizer = execution.getVariable("optimizer");
+                def gammas = execution.getVariable("gammas");
+                def betas = execution.getVariable("betas");
+                def initialParameters = betas + gammas;
+                execution.setVariable("iterations", 0);
+
+                def topic = UUID.randomUUID()
+                execution.setVariable("optimizationTopic", topic)
+
+                def request = [:];
+                request.put("topic", topic);
+                request.put("optimizer", optimizer);
+                request.put("initialParameters", initialParameters);
+                requeststring = new JsonBuilder(request).toPrettyString();
+                return requeststring;
+                </camunda:script>
+              </camunda:inputParameter>
+              <camunda:outputParameter name="iterations">
+                <camunda:script scriptFormat="groovy">
+                def iterations = connector.getVariable("iterations");
+                iterations = iterations + 1;
+                return iterations;
+                </camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="converged">
+                <camunda:script scriptFormat="groovy">return "false";</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_1lffclo</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_100xkhy</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="Task_0twvhh9" name="Optimizer Parameters" camunda:asyncAfter="true" camunda:exclusive="false" camunda:type="external" camunda:topic="execution.getVariable(&#34;iterations&#34;)">
+        <bpmn:extensionElements>
           <camunda:inputOutput>
-            <camunda:inputParameter name="method">POST</camunda:inputParameter>
-            <camunda:inputParameter name="headers">
-              <camunda:map>
-                <camunda:entry key="Accept">application/json</camunda:entry>
-                <camunda:entry key="Content-Type">application/json</camunda:entry>
-              </camunda:map>
-            </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/circuit-generation/algorithms/maxcutqaoa</camunda:inputParameter>
-            <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="groovy">
-			    			    import groovy.json.JsonBuilder
-                  def matrix = execution.getVariable("adjMatrix");
-                  def gammas = execution.getVariable("gammas");
-                  def betas = execution.getVariable("betas");
-                  def request = [:];
-
-                    if (matrix instanceof String) {
-                        println("Received matrix of type string: " + matrix);
-                        matrix = matrix.drop(1).take(matrix.length()-2);
-                        matrix= matrix.replaceAll("\\s","").split("\\],\\[");
-                        println("Separated matrix: " + matrix.toString());
-
-                        new_matrix = []
-                        for (el in matrix){
-                            def current_array = el.replaceAll("\\[","").replaceAll("\\]","")
-                            println("Current array: " + current_array.toString());
-                            new_arr = [];
-                            def numbers = current_array.split(",");
-                            println("Numbers: " + numbers.toString());
-
-                            for (number in numbers){
-                                new_arr.push(number.toDouble());
-                            }
-                            new_matrix.push(new_arr);
-                        }
-
-                        matrix = new_matrix;
-                        println("Matrix after parsing: " + matrix.toString());
-                        execution.setVariable("adjMatrix", matrix);
-                    }
-
-                  if (gammas instanceof String) {
-                             def current_gammas = gammas.replaceAll("\\[","").replaceAll("\\]","")
-                              println("Current gammas: " + current_gammas.toString());
-                              new_gammas = [];
-                              def numbers = current_gammas.split(",");
-                              for (number in numbers){
-                                  new_gammas.push(number.toDouble());
-                              }
-                              gammas = new_gammas
-                              execution.setVariable("gammas", gammas);
-                  }
-
-                    if (betas instanceof String) {
-                               def current_betas = betas.replaceAll("\\[","").replaceAll("\\]","")
-                                println("Current betas: " + current_betas.toString());
-                                new_betas = [];
-                                def numbers = current_betas.split(",");
-                                for (number in numbers){
-                                    new_betas.push(number.toDouble());
-                                }
-                                betas = new_betas
-                                execution.setVariable("betas", betas);
-                    }
-
-                request.put("adj_matrix", matrix);
-                  request.put("parameterized", "false");
-                  request.put("p", 1);
-                    request.put("gammas", gammas);
-                    request.put("betas", betas);
-                  if (execution.getVariable("wsBitstring") != null) {
-                    request.put("initial_state", execution.getVariable("wsBitstring"));
-                  }
-                  requeststring = new JsonBuilder(request).toPrettyString()
-                  print("test")
-                  print(requeststring)
-                  return requeststring;
-</camunda:script>
-            </camunda:inputParameter>
-            <camunda:outputParameter name="circuit">
-              <camunda:script scriptFormat="groovy">
-def resp = connector.getVariable("response");
-resp = new groovy.json.JsonSlurper().parseText(resp)
-circuit= resp.get('circuit')
-println(circuit);
-return [circuit];</camunda:script>
-            </camunda:outputParameter>
-            <camunda:outputParameter name="circuitDepthUntranspiled">
-              <camunda:script scriptFormat="groovy">
-def resp = connector.getVariable("response");
-resp = new groovy.json.JsonSlurper().parseText(resp)
-depth= resp.get('depth')
-println(depth);
-return depth;</camunda:script>
-            </camunda:outputParameter>
-            <camunda:outputParameter name="circuitNumQubits">
-              <camunda:script scriptFormat="groovy">
-def resp = connector.getVariable("response");
-resp = new groovy.json.JsonSlurper().parseText(resp)
-n_qubits= resp.get('n_qubits')
-println(n_qubits);
-return n_qubits;</camunda:script>
+            <camunda:outputParameter name="iterations">
+              <camunda:script scriptFormat="groovy">def iterations = execution.getVariable("iterations");
+							iterations = iterations + 1;
+							return iterations;
+					</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
-          <camunda:connectorId>http-connector</camunda:connectorId>
-        </camunda:connector>
-        <camunda:inputOutput>
-          <camunda:inputParameter name="url">quokka/maxcut</camunda:inputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1m60wcg</bpmn:incoming>
-      <bpmn:outgoing>Flow_18kx5os</bpmn:outgoing>
-    </bpmn:serviceTask>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_0jv1zhg</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1hst7js</bpmn:outgoing>
+      </bpmn:serviceTask>
+    </bpmn:subProcess>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_070m5p1">
-      <bpmndi:BPMNShape id="EndEvent_0pjq7fr_di" bpmnElement="EndEvent_0pjq7fr">
-        <dc:Bounds x="586" y="22" width="36" height="36" />
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1enu2om">
+      <bpmndi:BPMNShape id="SubProcess_0y7j7vp_di" bpmnElement="SubProcess_0y7j7vp" isExpanded="true">
+        <dc:Bounds x="130" y="80" width="690" height="250" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="StartEvent_0ej6lwb_di" bpmnElement="StartEvent_0ej6lwb">
-        <dc:Bounds x="0" y="22" width="36" height="36" />
+      <bpmndi:BPMNShape id="StartEvent_06jb5q3_di" bpmnElement="StartEvent_06jb5q3">
+        <dc:Bounds x="170" y="242" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_06awxe9_di" bpmnElement="Task_1h88ddf">
-        <dc:Bounds x="436" y="0" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0vr629i" bpmnElement="Gateway_0wq36cd" isMarkerVisible="true">
-        <dc:Bounds x="336" y="15" width="50" height="50" />
+      <bpmndi:BPMNShape id="ExclusiveGateway_0muea1g_di" bpmnElement="ExclusiveGateway_0muea1g" isMarkerVisible="true">
+        <dc:Bounds x="265" y="235" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="331" y="-9" width="60" height="14" />
+          <dc:Bounds x="251" y="292" width="79" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0pj22b3" bpmnElement="Gateway_0qaj4kt" isMarkerVisible="true">
-        <dc:Bounds x="86" y="15" width="50" height="50" />
+      <bpmndi:BPMNShape id="ExclusiveGateway_1ivwp1n_di" bpmnElement="ExclusiveGateway_1ivwp1n" isMarkerVisible="true">
+        <dc:Bounds x="485" y="235" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1qet32e_di" bpmnElement="Task_009hsrk">
-        <dc:Bounds x="186" y="0" width="100" height="80" />
-        <bpmndi:BPMNLabel />
+      <bpmndi:BPMNShape id="EndEvent_191hgmf_di" bpmnElement="EndEvent_191hgmf">
+        <dc:Bounds x="732" y="242" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_134gyga_di" bpmnElement="SequenceFlow_134gyga">
-        <di:waypoint x="536" y="40" />
-        <di:waypoint x="586" y="40" />
+      <bpmndi:BPMNShape id="ServiceTask_042ewp7_di" bpmnElement="Task_1pg7e2b">
+        <dc:Bounds x="340" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1qllkta_di" bpmnElement="Task_0twvhh9">
+        <dc:Bounds x="590" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_12iaeht_di" bpmnElement="SequenceFlow_12iaeht">
+        <di:waypoint x="206" y="260" />
+        <di:waypoint x="265" y="260" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_17fnx68" bpmnElement="Flow_1m60wcg">
-        <di:waypoint x="136" y="40" />
-        <di:waypoint x="186" y="40" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0czrsh0_di" bpmnElement="Flow_0czrsh0">
-        <di:waypoint x="386" y="40" />
-        <di:waypoint x="436" y="40" />
+      <bpmndi:BPMNEdge id="SequenceFlow_1ebfooz_di" bpmnElement="SequenceFlow_1ebfooz">
+        <di:waypoint x="315" y="260" />
+        <di:waypoint x="485" y="260" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="411" y="16" width="20" height="14" />
+          <dc:Bounds x="342" y="242" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_18kx5os_di" bpmnElement="Flow_18kx5os">
-        <di:waypoint x="286" y="40" />
-        <di:waypoint x="336" y="40" />
+      <bpmndi:BPMNEdge id="SequenceFlow_1lffclo_di" bpmnElement="SequenceFlow_1lffclo">
+        <di:waypoint x="290" y="235" />
+        <di:waypoint x="290" y="140" />
+        <di:waypoint x="340" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="296" y="203" width="18" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1qkl8n3_di" bpmnElement="Flow_1qkl8n3">
-        <di:waypoint x="36" y="40" />
-        <di:waypoint x="86" y="40" />
+      <bpmndi:BPMNEdge id="SequenceFlow_100xkhy_di" bpmnElement="SequenceFlow_100xkhy">
+        <di:waypoint x="440" y="140" />
+        <di:waypoint x="510" y="140" />
+        <di:waypoint x="510" y="235" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0tljgkh_di" bpmnElement="Flow_0tljgkh">
-        <di:waypoint x="361" y="65" />
-        <di:waypoint x="311" y="115" />
-        <di:waypoint x="236" y="115" />
-        <di:waypoint x="161" y="115" />
-        <di:waypoint x="111" y="65" />
+      <bpmndi:BPMNEdge id="SequenceFlow_0jv1zhg_di" bpmnElement="SequenceFlow_0jv1zhg">
+        <di:waypoint x="535" y="260" />
+        <di:waypoint x="590" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1hst7js_di" bpmnElement="SequenceFlow_1hst7js">
+        <di:waypoint x="690" y="260" />
+        <di:waypoint x="732" y="260" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
