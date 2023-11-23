@@ -1,13 +1,548 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
-  <bpmn2:process id="Process_1" isExecutable="true">
-    <bpmn2:startEvent id="StartEvent_1" />
-  </bpmn2:process>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:opentosca="https://github.com/UST-QuAntiL/OpenTOSCA" id="Definitions_0wzkc0b" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20230126">
+  <bpmn:process id="Process_070m5p1" isExecutable="true">
+    <bpmn:endEvent id="EndEvent_0pjq7fr">
+      <bpmn:incoming>SequenceFlow_134gyga</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="StartEvent_0ej6lwb">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="adjMatrix" label="Array containing adj_matrix" type="string" defaultValue="[[0,3,3,6,9,1],[3,0,4,4,-8,4],[3,4,0,3,-7,1],[6,4,3,0,-7,6],[9,-8,-7,-7,0,-5],[1,4,1,6,-5,0]]" />
+          <camunda:formField id="quantum_token_ibmq" label="IBMQ Token" type="string" />
+          <camunda:formField id="hub" label="IBMQ Hub" type="string" defaultValue="ibm-q" />
+          <camunda:formField id="group" label="IBMQ Group" type="string" defaultValue="open" />
+          <camunda:formField id="project" label="IBMQ Project" type="string" defaultValue="main" />
+          <camunda:formField id="ibmqUrl" label="IBMQ URL" type="string" defaultValue="https://auth.quantum-computing.ibm.com/api" />
+          <camunda:formField id="qpu" label="IBMQ Backend name" type="string" defaultValue="simulator" />
+          <camunda:formField id="noiseModel" label="Noise Model" type="string" />
+          <camunda:formField id="onlyMeasurementErrors" label="Noise Model contains only measurement errors" type="boolean" />
+          <camunda:formField id="gammas" label="gammas" type="string" defaultValue="[1]" />
+          <camunda:formField id="betas" label="betas" type="string" defaultValue="[1]" />
+          <camunda:formField id="HypervisorEndpoint" label="HypervisorEndpoint" type="string" defaultValue="https://idm01.bw-cloud.org:5000/v3" />
+          <camunda:formField id="HypervisorApplicationID" label="HypervisorApplicationID" type="string" defaultValue="c4393a03db254ff3854ac764d551fe13" />
+          <camunda:formField id="HypervisorApplicationSecret" label="HypervisorApplicationSecret" type="string" defaultValue="" />
+          <camunda:formField id="VMPrivateKey" label="VMPrivateKey" type="string" defaultValue="-----BEGIN RSA PRIVATE KEY-----&#10;MIIEpAIBAAKCAQEAyMv/c4dhoE8nGRuHWxvOBha0hYVF4nri4dcIHodNPUxFtnGy&#10;IZvOQEbX349syErH5wl+eJVC6CXy7Jw/YGdXG2f0r7uQg74LWboF434iudhQK2R9&#10;R+k1HMq2vIe6fPBFBKpJhYjk0KDwRh+FLDkxpkB11NqoNEE4KdESPIEkKh0/C3j4&#10;08vdZZNPeGuGkF0KoRw83H912d1XVY/Wxo7CLbxxjYXoG2wveZimmHY89xp+ZPbg&#10;5PoWpALblWjuV+lzaNDn9oXgrhLfOk4/8NY66Xp34om3Gwa8ulQzgkrPWT0FsVH9&#10;acHu49TFjaX39Xj5LSNdjXWT5PqZv7E3zpFMWwIDAQABAoIBAEKOc8b8edykP+Zv&#10;nIcTiU+1WPLlAQwYBXosR3GvEWgfDwBxYUUImu3tTYK5zKn7N5WaLQSVHQ9L/OB2&#10;zf8LYfEgnRdeyYERjjuYkHkehy4oyDIJ5gjfAQ7hFn8ZUjQ1g/sO4r3TaVzJ67qi&#10;mgbVkmJz/Vqne5eOgqpBtZS+jZkzbzYjQ6YmwMw6S/qXup2p69RzxuFSOCp9IHck&#10;/4jT9/hk9tVTz0wIaFS0fk3jIxhxGv3E6UiIpN1kn2HmoIsN+0Z5IXuuTSHA13MA&#10;xUNNBeVCM4JYaGH2GjjpoAPlpTK/wfYPXyWRuAewC40GpXMxoXz4L+D7nmyeJaBl&#10;/N+fQBECgYEA/klQkrgp1jhkLTlLvhHeHI6UG68kPtaWd7UuQ9Z8h0+4WTLu7+TS&#10;5Fu93AFCrtds6EG0FErDORCoH4XVOdvUyHHUjrnhuE4shYzIxZyxbm7VIhKGLgKH&#10;X7C4mv4doY6n2EQMld6WHDyA4nroExfl/xQBJdLDUog9gsKheZZ/JlMCgYEAyiZn&#10;r3mQeyyI61e+9Q80xkhefXxlOedL4fHkCO2+YkVqhoOj49zllWUAUFrSrEkue5+g&#10;YZp8eStNGjDzhYOzA/s8OO/mynYaQny942aPV6FJcMUFBguETI/xoxTBdxZ6HH6L&#10;Ku92ADJmCF7/n6raBOXQnzWI3MzdHiu4ysA08NkCgYB+qfxlqTDF0X8s+75b5kCS&#10;Tv89rwdJ+dAnvutVxVBwgmhcnj9g5cWbFIvFPCeAOjS4mIngFcGa+k4UrbChynv6&#10;gKEVm0fxa5dHyvHzZXMIhFLMTxfhcUcHhlrecbhG0m2PD46JVL/HPuggaIKTiDL7&#10;1XYg5hR/Vvf024hdrXaWmwKBgQCK2xCTx0QIZ9HxHofL21Mb9G/7cGwz9v33yOkj&#10;fPMum5INrfTwuzZ0hTlO+OQHdglY35ASG0TvEmBW4lMUXh+kV3nJfnigj7l//CGP&#10;R06lGePRc3P88AJDeQi5RbOSsrzUP9QmfPAoOHY/v8mFCp3RiW7hPauyR4KHi+7W&#10;TmrPGQKBgQDdo7sjrGwiiTYpY2DFuuGcyTx0TyBthjJe2dTfC0s+LGv0tDy57yf7&#10;Jjq4bnTTL+ETbNxXUFPmTZ6iPp4Itgm8ETFTJnrPCJJFfKm5avHomOrf2WjVp/Os&#10;6jLS0kgKqmi8ZRTgYu396yniKyza4N+IrYKFpg0m5GJUraSknrDQDA==&#10;-----END RSA PRIVATE KEY-----" />
+          <camunda:formField id="VMKeyPairName" label="VMKeyPairName" type="string" defaultValue="Orchestration" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_1qkl8n3</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_134gyga" sourceRef="Task_1h88ddf" targetRef="EndEvent_0pjq7fr" />
+    <bpmn:userTask id="Task_1h88ddf" name="Analyze Results">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="plotUrl" label="Result Image URL" type="string">
+            <camunda:properties>
+              <camunda:property id="Property_39pgd42" />
+            </camunda:properties>
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0czrsh0</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_134gyga</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0wq36cd" name="Converged?">
+      <bpmn:incoming>Flow_18kx5os</bpmn:incoming>
+      <bpmn:outgoing>Flow_0czrsh0</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0tljgkh</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_0qaj4kt">
+      <bpmn:incoming>Flow_1qkl8n3</bpmn:incoming>
+      <bpmn:incoming>Flow_0tljgkh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m60wcg</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1m60wcg" sourceRef="Gateway_0qaj4kt" targetRef="Task_009hsrk" />
+    <bpmn:sequenceFlow id="Flow_0czrsh0" name="Yes" sourceRef="Gateway_0wq36cd" targetRef="Task_1h88ddf">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')!= null &amp;&amp; execution.getVariable('converged') != 'false'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_18kx5os" sourceRef="Task_009hsrk" targetRef="Gateway_0wq36cd" />
+    <bpmn:sequenceFlow id="Flow_1qkl8n3" sourceRef="StartEvent_0ej6lwb" targetRef="Gateway_0qaj4kt" />
+    <bpmn:sequenceFlow id="Flow_0tljgkh" sourceRef="Gateway_0wq36cd" targetRef="Gateway_0qaj4kt">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ execution.getVariable('converged')== null || execution.getVariable('converged') == 'false'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:subProcess id="Task_009hsrk" name="Generate Circuits" camunda:asyncAfter="true" opentosca:onDemandDeployment="true" opentosca:deploymentModelUrl="http://129.69.214.230:8093/winery/servicetemplates/http%253A%252F%252Fquantil.org%252Fquantme%252Fpush/QuokkaCircuitExecutionService_INCOMPLETE_w1/?csar">
+      <bpmn:incoming>Flow_1m60wcg</bpmn:incoming>
+      <bpmn:outgoing>Flow_18kx5os</bpmn:outgoing>
+      <bpmn:startEvent id="Event_1og7iq6">
+        <bpmn:outgoing>Flow_1t6knju</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:serviceTask id="Activity_13lkvxc" name="Adapt Model">
+        <bpmn:incoming>Flow_1t6knju</bpmn:incoming>
+        <bpmn:outgoing>Flow_13ebh9s</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1t6knju" sourceRef="Event_1og7iq6" targetRef="Activity_13lkvxc" />
+      <bpmn:exclusiveGateway id="Gateway_0sf3cv5" name="Dedidcated Policy?">
+        <bpmn:incoming>Flow_13ebh9s</bpmn:incoming>
+        <bpmn:outgoing>Flow_018xwjq</bpmn:outgoing>
+        <bpmn:outgoing>Flow_1l156x5</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="Flow_13ebh9s" sourceRef="Activity_13lkvxc" targetRef="Gateway_0sf3cv5" />
+      <bpmn:scriptTask id="Activity_0tppl2e" name="Check For Equivalent Deployment Model">
+        <bpmn:incoming>Flow_018xwjq</bpmn:incoming>
+        <bpmn:outgoing>Flow_04i2ycw</bpmn:outgoing>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_018xwjq" name="no" sourceRef="Gateway_0sf3cv5" targetRef="Activity_0tppl2e">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable("dedicatedInstance") == false || dedicatedInstance == false}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:scriptTask id="Activity_1cfyrid" name="Check Container For Available Instance">
+        <bpmn:incoming>Flow_04i2ycw</bpmn:incoming>
+        <bpmn:outgoing>Flow_14sibkk</bpmn:outgoing>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_04i2ycw" sourceRef="Activity_0tppl2e" targetRef="Activity_1cfyrid" />
+      <bpmn:exclusiveGateway id="Gateway_0aa44w5" name="Instance Available?">
+        <bpmn:incoming>Flow_14sibkk</bpmn:incoming>
+        <bpmn:outgoing>Flow_1627u4t</bpmn:outgoing>
+        <bpmn:outgoing>Flow_0jzwfgv</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="Flow_14sibkk" sourceRef="Activity_1cfyrid" targetRef="Gateway_0aa44w5" />
+      <bpmn:exclusiveGateway id="Gateway_18vhs09">
+        <bpmn:incoming>Flow_1627u4t</bpmn:incoming>
+        <bpmn:incoming>Flow_1l156x5</bpmn:incoming>
+        <bpmn:outgoing>Flow_10ld3la</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="Flow_1627u4t" name="no" sourceRef="Gateway_0aa44w5" targetRef="Gateway_18vhs09">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable("InstanceAvailable") == false || InstanceAvailable == false}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="Flow_1l156x5" name="yes" sourceRef="Gateway_0sf3cv5" targetRef="Gateway_18vhs09">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable("dedicatedInstance") == true &amp;&amp; dedicatedInstance == true}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:scriptTask id="Activity_1mjb2mz" name="Upload to Container" scriptFormat="javascript">
+        <bpmn:incoming>Flow_10ld3la</bpmn:incoming>
+        <bpmn:outgoing>Flow_1otfb2l</bpmn:outgoing>
+        <bpmn:script>
+var params = {"opentoscaEndpoint":"http://129.69.214.230:1337/csars","deploymentModelUrl":"http://129.69.214.230:8093/winery/servicetemplates/http%253A%252F%252Fquantil.org%252Fquantme%252Fpush/QuokkaCircuitExecutionService_INCOMPLETE_w1/?csar","subprocessId":"Task_009hsrk","camundaTopic":"ChfkZmUwVfpE","camundaEndpoint":"http://129.69.214.230:8090/engine-rest"};
+params.csarName = "ondemand_" + (Math.random().toString().substring(3));
+
+
+function fetch(method, url, body) {
+    try {
+        var resourceURL = new java.net.URL(url);
+    
+        var urlConnection = resourceURL.openConnection();
+        urlConnection.setRequestMethod(method);
+        urlConnection.setRequestProperty("Accept", "application/json");
+        if (body) {
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            var outputStream = urlConnection.getOutputStream()
+            var outputStreamWriter = new java.io.OutputStreamWriter(outputStream)
+            outputStreamWriter.write(body);
+            outputStreamWriter.flush();
+            outputStreamWriter.close();
+            outputStream.close();
+        }
+    
+        var inputStream = new java.io.InputStreamReader(urlConnection
+            .getInputStream());
+        var bufferedReader = new java.io.BufferedReader(inputStream);
+        var inputLine = ""
+        var text = "";
+        var i = 5;
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            text += inputLine
+        }
+        bufferedReader.close();
+        java.lang.System.out.println("Response from " + url + ": " + text);
+        return text;
+    } catch (e) {
+        java.lang.System.err.println(e);
+        throw e;
+    }
+}
+
+var createCsarResponse = fetch('POST', params.opentoscaEndpoint, JSON.stringify({
+    enrich: 'false',
+    name: params.csarName,
+    url: params.deploymentModelUrl
+}))
+
+var serviceTemplates = JSON.parse(fetch('GET', params.opentoscaEndpoint + "/" + params.csarName + ".csar/servicetemplates"))
+var buildPlansUrl = serviceTemplates.service_templates[0]._links.self.href + '/buildplans'
+var buildPlans = JSON.parse(fetch('GET', buildPlansUrl))
+var buildPlanUrl = buildPlans.plans[0]._links.self.href
+var inputParameters = JSON.parse(fetch('GET', buildPlanUrl)).input_parameters
+for(var i = 0; i &lt; inputParameters.length; i++) {
+    if(inputParameters[i].name === "camundaEndpoint") {
+        inputParameters[i].value = params.opentoscaEndpoint
+    } else if(inputParameters[i].name === "camundaTopic") {
+        inputParameters[i].value = params.camundaTopic
+    } else {
+        inputParameters[i].value = "null"
+    }
+}
+var createInstanceResponse = fetch('POST', buildPlanUrl + "/instances", JSON.stringify(inputParameters))
+execution.setVariable(params.subprocessId + "_deploymentBuildPlanInstanceUrl", buildPlanUrl + "/instances/" + createInstanceResponse);</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_10ld3la" sourceRef="Gateway_18vhs09" targetRef="Activity_1mjb2mz" />
+      <bpmn:scriptTask id="Activity_0305l49" name="Deploy Service" scriptFormat="javascript">
+        <bpmn:incoming>Flow_1otfb2l</bpmn:incoming>
+        <bpmn:outgoing>Flow_02olaf4</bpmn:outgoing>
+        <bpmn:script>
+var params = {"subprocessId":"Task_009hsrk"};
+
+
+function fetch(method, url, body) {
+    try {
+        var resourceURL = new java.net.URL(url);
+    
+        var urlConnection = resourceURL.openConnection();
+        urlConnection.setRequestMethod(method);
+        urlConnection.setRequestProperty("Accept", "application/json");
+        if (body) {
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            var outputStream = urlConnection.getOutputStream()
+            var outputStreamWriter = new java.io.OutputStreamWriter(outputStream)
+            outputStreamWriter.write(body);
+            outputStreamWriter.flush();
+            outputStreamWriter.close();
+            outputStream.close();
+        }
+    
+        var inputStream = new java.io.InputStreamReader(urlConnection
+            .getInputStream());
+        var bufferedReader = new java.io.BufferedReader(inputStream);
+        var inputLine = ""
+        var text = "";
+        var i = 5;
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            text += inputLine
+        }
+        bufferedReader.close();
+        java.lang.System.out.println("Response from " + url + ": " + text);
+        return text;
+    } catch (e) {
+        java.lang.System.err.println(e);
+        throw e;
+    }
+}
+var buildPlanInstanceUrl = execution.getVariable(params.subprocessId + "_deploymentBuildPlanInstanceUrl");
+var instanceUrl;
+for(var i = 0; i &lt; 30; i++) {
+    try {
+        instanceUrl = JSON.parse(fetch('GET', buildPlanInstanceUrl))._links.service_template_instance.href; 
+        if (instanceUrl) break;
+     } catch (e) {
+     }
+     java.lang.Thread.sleep(2000);
+}
+
+java.lang.System.out.println("InstanceUrl: " + instanceUrl);
+
+for(var i = 0; i &lt; 30 * 3; i++) {
+    try {
+        var createInstanceResponse = fetch('GET', instanceUrl);
+        var instance = JSON.parse(createInstanceResponse).service_template_instances;
+        if (instance &amp;&amp; instance.state === "CREATED") {
+            break;
+        }
+     } catch (e) {
+     }
+     java.lang.Thread.sleep(30000);
+}
+
+var properties = JSON.parse(fetch('GET', instanceUrl + "/properties"));
+ 
+execution.setVariable("selfserviceApplicationUrl", properties.selfserviceApplicationUrl);
+java.lang.Thread.sleep(12000);
+</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_1otfb2l" sourceRef="Activity_1mjb2mz" targetRef="Activity_0305l49" />
+      <bpmn:exclusiveGateway id="Gateway_1mja82x">
+        <bpmn:incoming>Flow_02olaf4</bpmn:incoming>
+        <bpmn:incoming>Flow_0jzwfgv</bpmn:incoming>
+        <bpmn:outgoing>Flow_1ylnm3w</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="Flow_02olaf4" sourceRef="Activity_0305l49" targetRef="Gateway_1mja82x" />
+      <bpmn:sequenceFlow id="Flow_0jzwfgv" name="yes" sourceRef="Gateway_0aa44w5" targetRef="Gateway_1mja82x">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable("instanceAvailable") == true &amp;&amp; instanceAvailable == true}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:serviceTask id="Activity_1m9d6mt" name="Invoke Service">
+        <bpmn:extensionElements>
+          <camunda:connector>
+            <camunda:inputOutput>
+              <camunda:inputParameter name="method">POST</camunda:inputParameter>
+              <camunda:inputParameter name="headers">
+                <camunda:map>
+                  <camunda:entry key="Accept">application/json</camunda:entry>
+                  <camunda:entry key="Content-Type">application/json</camunda:entry>
+                </camunda:map>
+              </camunda:inputParameter>
+              <camunda:inputParameter name="url">${selfserviceApplicationUrl.concat("http://quokka-gateway:6474/quokka/circuit-generation/algorithms/maxcutqaoa")}</camunda:inputParameter>
+              <camunda:inputParameter name="payload">
+                <camunda:script scriptFormat="groovy">
+			    			    import groovy.json.JsonBuilder
+                  def matrix = execution.getVariable("adjMatrix");
+                  def gammas = execution.getVariable("gammas");
+                  def betas = execution.getVariable("betas");
+                  def request = [:];
+
+                    if (matrix instanceof String) {
+                        println("Received matrix of type string: " + matrix);
+                        matrix = matrix.drop(1).take(matrix.length()-2);
+                        matrix= matrix.replaceAll("\\s","").split("\\],\\[");
+                        println("Separated matrix: " + matrix.toString());
+
+                        new_matrix = []
+                        for (el in matrix){
+                            def current_array = el.replaceAll("\\[","").replaceAll("\\]","")
+                            println("Current array: " + current_array.toString());
+                            new_arr = [];
+                            def numbers = current_array.split(",");
+                            println("Numbers: " + numbers.toString());
+
+                            for (number in numbers){
+                                new_arr.push(number.toDouble());
+                            }
+                            new_matrix.push(new_arr);
+                        }
+
+                        matrix = new_matrix;
+                        println("Matrix after parsing: " + matrix.toString());
+                        execution.setVariable("adjMatrix", matrix);
+                    }
+
+                  if (gammas instanceof String) {
+                             def current_gammas = gammas.replaceAll("\\[","").replaceAll("\\]","")
+                              println("Current gammas: " + current_gammas.toString());
+                              new_gammas = [];
+                              def numbers = current_gammas.split(",");
+                              for (number in numbers){
+                                  new_gammas.push(number.toDouble());
+                              }
+                              gammas = new_gammas
+                              execution.setVariable("gammas", gammas);
+                  }
+
+                    if (betas instanceof String) {
+                               def current_betas = betas.replaceAll("\\[","").replaceAll("\\]","")
+                                println("Current betas: " + current_betas.toString());
+                                new_betas = [];
+                                def numbers = current_betas.split(",");
+                                for (number in numbers){
+                                    new_betas.push(number.toDouble());
+                                }
+                                betas = new_betas
+                                execution.setVariable("betas", betas);
+                    }
+
+                request.put("adj_matrix", matrix);
+                  request.put("parameterized", "false");
+                  request.put("p", 1);
+                    request.put("gammas", gammas);
+                    request.put("betas", betas);
+                  if (execution.getVariable("wsBitstring") != null) {
+                    request.put("initial_state", execution.getVariable("wsBitstring"));
+                  }
+                  requeststring = new JsonBuilder(request).toPrettyString()
+                  print("test")
+                  print(requeststring)
+                  return requeststring;
+</camunda:script>
+              </camunda:inputParameter>
+              <camunda:outputParameter name="circuit">
+                <camunda:script scriptFormat="groovy">
+def resp = connector.getVariable("response");
+resp = new groovy.json.JsonSlurper().parseText(resp)
+circuit= resp.get('circuit')
+println(circuit);
+return [circuit];</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="circuitDepthUntranspiled">
+                <camunda:script scriptFormat="groovy">
+def resp = connector.getVariable("response");
+resp = new groovy.json.JsonSlurper().parseText(resp)
+depth= resp.get('depth')
+println(depth);
+return depth;</camunda:script>
+              </camunda:outputParameter>
+              <camunda:outputParameter name="circuitNumQubits">
+                <camunda:script scriptFormat="groovy">
+def resp = connector.getVariable("response");
+resp = new groovy.json.JsonSlurper().parseText(resp)
+n_qubits= resp.get('n_qubits')
+println(n_qubits);
+return n_qubits;</camunda:script>
+              </camunda:outputParameter>
+            </camunda:inputOutput>
+            <camunda:connectorId>http-connector</camunda:connectorId>
+          </camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">quokka/maxcut</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1ylnm3w</bpmn:incoming>
+        <bpmn:outgoing>Flow_0sye5yb</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1ylnm3w" sourceRef="Gateway_1mja82x" targetRef="Activity_1m9d6mt" />
+      <bpmn:endEvent id="Event_1crc5pq">
+        <bpmn:incoming>Flow_0sye5yb</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_0sye5yb" sourceRef="Activity_1m9d6mt" targetRef="Event_1crc5pq" />
+    </bpmn:subProcess>
+  </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="412" y="240" width="36" height="36" />
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_070m5p1">
+      <bpmndi:BPMNShape id="EndEvent_0pjq7fr_di" bpmnElement="EndEvent_0pjq7fr">
+        <dc:Bounds x="586" y="22" width="36" height="36" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0ej6lwb_di" bpmnElement="StartEvent_0ej6lwb">
+        <dc:Bounds x="0" y="22" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_06awxe9_di" bpmnElement="Task_1h88ddf">
+        <dc:Bounds x="436" y="0" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0vr629i" bpmnElement="Gateway_0wq36cd" isMarkerVisible="true">
+        <dc:Bounds x="336" y="15" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="331" y="-9" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0pj22b3" bpmnElement="Gateway_0qaj4kt" isMarkerVisible="true">
+        <dc:Bounds x="86" y="15" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14hx5kn_di" bpmnElement="Task_009hsrk">
+        <dc:Bounds x="186" y="0" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_134gyga_di" bpmnElement="SequenceFlow_134gyga">
+        <di:waypoint x="536" y="40" />
+        <di:waypoint x="586" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_17fnx68" bpmnElement="Flow_1m60wcg">
+        <di:waypoint x="136" y="40" />
+        <di:waypoint x="186" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0czrsh0_di" bpmnElement="Flow_0czrsh0">
+        <di:waypoint x="386" y="40" />
+        <di:waypoint x="436" y="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="411" y="16" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18kx5os_di" bpmnElement="Flow_18kx5os">
+        <di:waypoint x="286" y="40" />
+        <di:waypoint x="336" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qkl8n3_di" bpmnElement="Flow_1qkl8n3">
+        <di:waypoint x="36" y="40" />
+        <di:waypoint x="86" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tljgkh_di" bpmnElement="Flow_0tljgkh">
+        <di:waypoint x="361" y="65" />
+        <di:waypoint x="311" y="115" />
+        <di:waypoint x="236" y="115" />
+        <di:waypoint x="161" y="115" />
+        <di:waypoint x="111" y="65" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
-</bpmn2:definitions>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_11ouzv6">
+    <bpmndi:BPMNPlane id="BPMNPlane_0mcxyo2" bpmnElement="Task_009hsrk">
+      <bpmndi:BPMNShape id="Event_1og7iq6_di" bpmnElement="Event_1og7iq6">
+        <dc:Bounds x="0" y="22" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13lkvxc_di" bpmnElement="Activity_13lkvxc">
+        <dc:Bounds x="86" y="0" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0sf3cv5_di" bpmnElement="Gateway_0sf3cv5" isMarkerVisible="true">
+        <dc:Bounds x="236" y="15" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0tppl2e_di" bpmnElement="Activity_0tppl2e">
+        <dc:Bounds x="336" y="0" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cfyrid_di" bpmnElement="Activity_1cfyrid">
+        <dc:Bounds x="486" y="0" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0aa44w5_di" bpmnElement="Gateway_0aa44w5" isMarkerVisible="true">
+        <dc:Bounds x="636" y="15" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_18vhs09_di" bpmnElement="Gateway_18vhs09" isMarkerVisible="true">
+        <dc:Bounds x="736" y="15" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1mjb2mz_di" bpmnElement="Activity_1mjb2mz">
+        <dc:Bounds x="836" y="0" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0305l49_di" bpmnElement="Activity_0305l49">
+        <dc:Bounds x="986" y="0" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1mja82x_di" bpmnElement="Gateway_1mja82x" isMarkerVisible="true">
+        <dc:Bounds x="1136" y="15" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1m9d6mt_di" bpmnElement="Activity_1m9d6mt">
+        <dc:Bounds x="1236" y="0" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1crc5pq_di" bpmnElement="Event_1crc5pq">
+        <dc:Bounds x="1386" y="22" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1t6knju_di" bpmnElement="Flow_1t6knju">
+        <di:waypoint x="36" y="40" />
+        <di:waypoint x="86" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13ebh9s_di" bpmnElement="Flow_13ebh9s">
+        <di:waypoint x="186" y="40" />
+        <di:waypoint x="236" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_018xwjq_di" bpmnElement="Flow_018xwjq">
+        <di:waypoint x="286" y="40" />
+        <di:waypoint x="336" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04i2ycw_di" bpmnElement="Flow_04i2ycw">
+        <di:waypoint x="436" y="40" />
+        <di:waypoint x="486" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14sibkk_di" bpmnElement="Flow_14sibkk">
+        <di:waypoint x="586" y="40" />
+        <di:waypoint x="636" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1627u4t_di" bpmnElement="Flow_1627u4t">
+        <di:waypoint x="686" y="40" />
+        <di:waypoint x="736" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l156x5_di" bpmnElement="Flow_1l156x5">
+        <di:waypoint x="261" y="65" />
+        <di:waypoint x="311" y="115" />
+        <di:waypoint x="386" y="115" />
+        <di:waypoint x="461" y="115" />
+        <di:waypoint x="536" y="115" />
+        <di:waypoint x="611" y="115" />
+        <di:waypoint x="661" y="115" />
+        <di:waypoint x="711" y="115" />
+        <di:waypoint x="761" y="65" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10ld3la_di" bpmnElement="Flow_10ld3la">
+        <di:waypoint x="786" y="40" />
+        <di:waypoint x="836" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1otfb2l_di" bpmnElement="Flow_1otfb2l">
+        <di:waypoint x="936" y="40" />
+        <di:waypoint x="986" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02olaf4_di" bpmnElement="Flow_02olaf4">
+        <di:waypoint x="1086" y="40" />
+        <di:waypoint x="1136" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jzwfgv_di" bpmnElement="Flow_0jzwfgv">
+        <di:waypoint x="661" y="65" />
+        <di:waypoint x="711" y="135" />
+        <di:waypoint x="761" y="135" />
+        <di:waypoint x="811" y="135" />
+        <di:waypoint x="886" y="135" />
+        <di:waypoint x="961" y="135" />
+        <di:waypoint x="1036" y="135" />
+        <di:waypoint x="1111" y="135" />
+        <di:waypoint x="1161" y="65" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ylnm3w_di" bpmnElement="Flow_1ylnm3w">
+        <di:waypoint x="1186" y="40" />
+        <di:waypoint x="1236" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sye5yb_di" bpmnElement="Flow_0sye5yb">
+        <di:waypoint x="1336" y="40" />
+        <di:waypoint x="1386" y="40" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
