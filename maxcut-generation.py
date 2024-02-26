@@ -1,0 +1,2 @@
+from qiskit.circuit.quantumcircuit import QuantumCircuit
+qc = QuantumCircuit.from_qasm_str("OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg meas[4];\nh q[0];\nh q[1];\nrzz(1.0) q[0],q[1];\nh q[2];\nrzz(1.0) q[0],q[2];\nrx(2.0) q[0];\nrzz(1.0) q[1],q[2];\nh q[3];\nrzz(1.0) q[1],q[3];\nrx(2.0) q[1];\nrzz(1.0) q[2],q[3];\nrx(2.0) q[2];\nrx(2.0) q[3];\nbarrier q[0],q[1],q[2],q[3];\nmeasure q[0] -> meas[0];\nmeasure q[1] -> meas[1];\nmeasure q[2] -> meas[2];\nmeasure q[3] -> meas[3];\n")
